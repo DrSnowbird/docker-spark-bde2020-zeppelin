@@ -1,0 +1,31 @@
+version: '3' 
+services:
+  zeppelin:
+    image: openkbs/bde2020-zeppelin:2.1.0-hadoop2.8-hive-java8
+    build:
+      context: .
+      args:
+	ZEPPELIN_DOWNLOAD_URL: ${ZEPPELIN_DOWNLOAD_URL} 
+	ZEPPELIN_VERSION: ${ZEPPELIN_VERSION} 
+	ZEPPELIN_PORT: ${ZEPPELIN_PORT} 
+	ZEPPELIN_INSTALL_DIR: ${ZEPPELIN_INSTALL_DIR} 
+    container_name: zeppelin
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - ZEPPELIN_HOME=/usr/lib/zeppelin
+    environment:
+      ZEPPELIN_PORT: 8080
+      ZEPPELIN_JAVA_OPTS: >-
+        -Dspark.driver.memory=1g
+        -Dspark.executor.memory=2g
+      SPARK_SUBMIT_OPTIONS: >-
+        --conf spark.driver.host=localhost
+        --conf spark.driver.port=8081
+      MASTER: spark://spark-master:7077
+    ports:
+      - 19090:8080
+    env_file:
+      - ./hadoop-hive.env
+    volumes:
+      - ./data:/usr/zeppelin/data
+      - ./notebook:/usr/zeppelin/notebook

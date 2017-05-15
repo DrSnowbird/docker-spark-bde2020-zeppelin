@@ -1,0 +1,140 @@
+version: '3' 
+services:
+
+  namenode:
+    image: bde2020/hadoop-namenode:1.1.0-hadoop2.8-java8
+    container_name: namenode
+    volumes:
+      - ./data/namenode:/hadoop/dfs/name
+    environment:
+      - CLUSTER_NAME=test
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    env_file:
+      - ./hadoop-hive.env
+    ports:
+      - 50070:50070
+      
+  datanode:
+    image: bde2020/hadoop-datanode:1.1.0-hadoop2.8-java8
+    container_name: datanode
+    depends_on: 
+      - namenode
+    volumes:
+      - ./data/datanode:/hadoop/dfs/data
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    env_file:
+      - ./hadoop-hive.env
+    ports:
+      - 50075:50075
+      
+  hive-server:
+    image: bde2020/hive:2.1.0-postgresql-metastore
+    container_name: hive-server
+    env_file:
+      - ./hadoop-hive.env
+    environment:
+      - HIVE_CORE_CONF_javax_jdo_option_ConnectionURL=jdbc:postgresql://hive-metastore/metastore
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    ports:
+      - "10000:10000"
+      
+  hive-metastore:
+    image: bde2020/hive:2.1.0-postgresql-metastore
+    container_name: hive-metastore
+    env_file:
+      - ./hadoop-hive.env
+    environment:
+      - HIVE_CORE_CONF_javax_jdo_option_ConnectionURL=jdbc:postgresql://hive-metastore/metastore
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    command: /opt/hive/bin/hive --service metastore
+    
+  hive-metastore-postgresql:
+    image: bde2020/hive-metastore-postgresql:2.1.0
+    container_name: hive-metastore-postgresql
+    environment:
+      - HIVE_CORE_CONF_javax_jdo_option_ConnectionURL=jdbc:postgresql://hive-metastore/metastore
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    
+  spark-master:
+    image: bde2020/spark-master:2.1.0-hadoop2.8-hive-java8
+    container_name: spark-master
+    ports:
+      - 8080:8080
+      - 7077:7077
+    environment:
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    depends_on:
+      - namenode
+    env_file:
+      - ./hadoop-hive.env
+     
+  spark-worker:
+    image: bde2020/spark-worker:2.1.0-hadoop2.8-hive-java8
+    container_name: spark-worker
+    depends_on:
+      - spark-master
+    environment:
+      - SPARK_MASTER=spark://spark-master:7077
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+      - HIVE_CORE_CONF_javax_jdo_option_ConnectionURL=jdbc:postgresql://hive-metastore/metastore
+    depends_on:
+      - spark-master
+    ports:
+      - 8081:8081
+    env_file:
+      - ./hadoop-hive.env
+
+  zeppelin:
+    image: openkbs/bde2020-zeppelin:2.1.0-hadoop2.8-hive-java8
+    build:
+      context: .
+      args:
+        APACHE_SPARK_VERSION: 2.1.0 
+        APACHE_HADOOP_VERSION: 2.8.0 
+        SPARK_MASTER: "spark://spark-master:7077" 
+        ZEPPELIN_DOWNLOAD_URL: http://apache.cs.utah.edu/zeppelin 
+        ZEPPELIN_VERSION: 0.7.1 
+        ZEPPELIN_PORT: 8080 
+        ZEPPELIN_INSTALL_DIR: /usr/lib 
+        ZEPPELIN_HOME: /usr/lib/zeppelin 
+        ZEPPELIN_PKG_NAME: zeppelin-0.7.1-bin-all 
+    container_name: zeppelin
+#    depends_on:
+#      - spark-master
+#      - namenode
+    environment:
+      CORE_CONF_fs_defaultFS: "hdfs://namenode:8020"
+      SPARK_MASTER: "spark://spark-master:7077"
+      MASTER: "spark://spark-master:7077"
+      ZEPPELIN_PORT: 8080
+      ZEPPELIN_JAVA_OPTS: >-
+        -Dspark.driver.memory=1g
+        -Dspark.executor.memory=2g
+      MASTER: spark://spark-master:7077
+    ports:
+      - 19090:8080
+    env_file:
+      - ./hadoop-hive.env
+    volumes:
+      - ./data:/usr/lib/zeppelin/data
+      - ./notebook:/usr/lib/zeppelin/notebook
+    command: /usr/lib/zeppelin/bin/zeppelin.sh
+    
+  spark-notebook:
+    image: bde2020/spark-notebook:2.1.0-hadoop2.8-hive
+    container_name: spark-notebook
+    env_file:
+      - ./hadoop-hive.env
+    ports:
+      - 9001:9001
+      
+  hue:
+    image: bde2020/hdfs-filebrowser:3.11
+    container_name: hue
+    ports:
+      - 8088:8088
+    environment:
+      - NAMENODE_HOST=namenode
+
+

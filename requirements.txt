@@ -1,0 +1,6 @@
+pkgconfig
+numpy
+scipy
+panda
+pandasql
+matplotlib

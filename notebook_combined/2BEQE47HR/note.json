@@ -1,0 +1,191 @@
+{
+  "paragraphs": [
+    {
+      "title": "Download Text Data on Apache NiFi",
+      "text": "%sh wget https://raw.githubusercontent.com/roberthryniewicz/datasets/master/About-Apache-NiFi.txt -O /tmp/nifi.txt",
+      "user": "anonymous",
+      "dateUpdated": "May 7, 2017 7:13:25 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/text",
+        "title": true,
+        "results": {},
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "--2017-05-07 19:13:25--  https://raw.githubusercontent.com/roberthryniewicz/datasets/master/About-Apache-NiFi.txt\nResolving raw.githubusercontent.com (raw.githubusercontent.com)... 151.101.20.133\nConnecting to raw.githubusercontent.com (raw.githubusercontent.com)|151.101.20.133|:443... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: 15725 (15K) [text/plain]\nSaving to: ‘/tmp/nifi.txt’\n\n     0K .......... .....                                      100%  844K\u003d0.02s\n\n2017-05-07 19:13:25 (844 KB/s) - ‘/tmp/nifi.txt’ saved [15725/15725]\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1456516185852_-361375517",
+      "id": "20160226-194945_2037625547",
+      "dateCreated": "Feb 26, 2016 7:49:45 AM",
+      "dateStarted": "May 7, 2017 7:13:25 PM",
+      "dateFinished": "May 7, 2017 7:13:25 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Move downloaded text to HDFS",
+      "text": "%sh\n\n# Remove existing copy of data from HDFS\nhadoop fs -rm -f /tmp/nifi.txt\n\n# Move latest text data to HDFS\nhadoop fs -put /tmp/nifi.txt /tmp",
+      "user": "anonymous",
+      "dateUpdated": "May 7, 2017 7:12:59 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/text",
+        "title": true,
+        "results": {},
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "17/05/07 19:13:00 INFO Configuration.deprecation: io.bytes.per.checksum is deprecated. Instead, use dfs.bytes-per-checksum\n17/05/07 19:13:00 INFO fs.TrashPolicyDefault: Namenode trash configuration: Deletion interval \u003d 0 minutes, Emptier interval \u003d 0 minutes.\nDeleted /tmp/nifi.txt\nput: `/tmp/nifi.txt\u0027: No such file or directory\n"
+          },
+          {
+            "type": "TEXT",
+            "data": "ExitValue: 1"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1456517163390_-1029878637",
+      "id": "20160226-200603_237571112",
+      "dateCreated": "Feb 26, 2016 8:06:03 AM",
+      "dateStarted": "May 7, 2017 7:12:59 PM",
+      "dateFinished": "May 7, 2017 7:13:01 PM",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Count the number of non-empty lines",
+      "text": "%pyspark\n\n# Create an RDD from text file in HDFS\nmyLines \u003d sc.textFile(\u0027hdfs:///tmp/nifi.txt\u0027)\n\n# Filter out empty lines\nmyLinesFiltered \u003d myLines.filter( lambda x: len(x) \u003e 0 )\n\n# Count number of non-empty lines\ncount \u003d myLinesFiltered.count()\nprint count",
+      "user": "anonymous",
+      "dateUpdated": "May 7, 2017 7:20:43 PM",
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/python",
+        "title": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "java.lang.NullPointerException\n\tat org.apache.zeppelin.spark.Utils.invokeMethod(Utils.java:38)\n\tat org.apache.zeppelin.spark.Utils.invokeMethod(Utils.java:33)\n\tat org.apache.zeppelin.spark.SparkInterpreter.createSparkContext_2(SparkInterpreter.java:380)\n\tat org.apache.zeppelin.spark.SparkInterpreter.createSparkContext(SparkInterpreter.java:369)\n\tat org.apache.zeppelin.spark.SparkInterpreter.getSparkContext(SparkInterpreter.java:144)\n\tat org.apache.zeppelin.spark.SparkInterpreter.open(SparkInterpreter.java:817)\n\tat org.apache.zeppelin.interpreter.LazyOpenInterpreter.open(LazyOpenInterpreter.java:69)\n\tat org.apache.zeppelin.spark.PySparkInterpreter.getSparkInterpreter(PySparkInterpreter.java:546)\n\tat org.apache.zeppelin.spark.PySparkInterpreter.createGatewayServerAndStartScript(PySparkInterpreter.java:206)\n\tat org.apache.zeppelin.spark.PySparkInterpreter.open(PySparkInterpreter.java:160)\n\tat org.apache.zeppelin.interpreter.LazyOpenInterpreter.open(LazyOpenInterpreter.java:69)\n\tat org.apache.zeppelin.interpreter.remote.RemoteInterpreterServer$InterpretJob.jobRun(RemoteInterpreterServer.java:482)\n\tat org.apache.zeppelin.scheduler.Job.run(Job.java:175)\n\tat org.apache.zeppelin.scheduler.FIFOScheduler$1.run(FIFOScheduler.java:139)\n\tat java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$201(ScheduledThreadPoolExecutor.java:180)\n\tat java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:293)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)\n\tat java.lang.Thread.run(Thread.java:745)\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1456517186199_1404858375",
+      "id": "20160226-200626_1038350828",
+      "dateCreated": "Feb 26, 2016 8:06:26 AM",
+      "dateStarted": "May 7, 2017 7:20:43 PM",
+      "dateFinished": "May 7, 2017 7:20:48 PM",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1456517209483_1653806238",
+      "id": "20160226-200649_425588199",
+      "dateCreated": "Feb 26, 2016 8:06:49 AM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "Getting Started / Apache Spark in 5 Minutes",
+  "id": "2BEQE47HR",
+  "angularObjects": {
+    "2CEKEY8ZT:shared_process": [],
+    "2CFTD1MUR:shared_process": [],
+    "2CG3MRM3Q:shared_process": [],
+    "2CF8KMCRF:shared_process": [],
+    "2CJ9H7HP1:shared_process": [],
+    "2CEKC89RV:shared_process": [],
+    "2CJA9VDYX:shared_process": [],
+    "2CGMTMKRE:shared_process": [],
+    "2CJ6NJZ79:shared_process": []
+  },
+  "config": {
+    "looknfeel": "default"
+  },
+  "info": {}
+}
