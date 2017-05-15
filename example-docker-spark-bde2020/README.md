@@ -46,5 +46,6 @@ docker-compose -f docker-compose-hive.yml up -d spark-notebook
 ```
 
 ## Contributors
+* DrSnowbird@openkbs.org
 * Ivan Ermilov @earthquakesan
 
