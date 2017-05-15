@@ -1,0 +1,991 @@
+{
+  "paragraphs": [
+    {
+      "title": "Download spending dataset into HDFS",
+      "text": "%md\n## Sample SparkSQL notebook\n#### Sample Spark notebook using public Australian Dataset to see where tax payer money is being invested\nby [Ned Shawa](https://twitter.com/nedshawa)\n",
+      "config": {
+        "colWidth": 12.0,
+        "tableHide": false,
+        "title": false,
+        "editorHide": true,
+        "enabled": true,
+        "editorMode": "ace/mode/markdown",
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {}
+            }
+          }
+        ]
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch2\u003eSample SparkSQL notebook\u003c/h2\u003e\n\u003ch4\u003eSample Spark notebook using public Australian Dataset to see where tax payer money is being invested\u003c/h4\u003e\n\u003cp\u003eby \u003ca href\u003d\"https://twitter.com/nedshawa\"\u003eNed Shawa\u003c/a\u003e\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "result": {
+        "code": "SUCCESS",
+        "type": "HTML",
+        "msg": "\u003ch2\u003eSample SparkSQL notebook\u003c/h2\u003e\n\u003ch4\u003eSample Spark notebook using public Australian Dataset to see where tax payer money is being invested\u003c/h4\u003e\n\u003cp\u003eby \u003ca href\u003d\"https://twitter.com/nedshawa\"\u003eNed Shawa\u003c/a\u003e\u003c/p\u003e\n"
+      },
+      "apps": [],
+      "jobName": "paragraph_1432331641199_1886957287",
+      "id": "20150522-145401_1470736167",
+      "dateCreated": "May 22, 2015 2:54:01 AM",
+      "dateStarted": "May 24, 2015 4:59:07 AM",
+      "dateFinished": "May 24, 2015 4:59:07 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Download data and import into HDFS",
+      "text": "%sh\n\n#remove existing copies of dataset from HDFS\nhadoop fs -rm  /tmp/expenses.csv\n\n#fetch the dataset\nwget https://data.gov.au/dataset/f84b9baf-c1c1-437c-8c1e-654b2829848c/resource/88399d53-d55c-466c-8f4a-6cb965d24d6d/download/healthexpenditurebyareaandsource.csv -O /tmp/expenses.csv\n\n#remove header\nsed -i \u00271d\u0027 /tmp/expenses.csv\n#remove empty fields\nsed -i \"s/,,,,,//g\" /tmp/expenses.csv\nsed -i \u0027/^\\s*$/d\u0027 /tmp/expenses.csv\n\n#put data into HDFS\nhadoop fs -put /tmp/expenses.csv /tmp\nhadoop fs -ls -h /tmp/expenses.csv\nrm /tmp/expenses.csv",
+      "user": "anonymous",
+      "dateUpdated": "May 7, 2017 8:37:30 PM",
+      "config": {
+        "colWidth": 12.0,
+        "title": true,
+        "editorMode": "ace/mode/sh",
+        "enabled": true,
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {}
+            }
+          }
+        ],
+        "editorSetting": {
+          "language": "sh",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "rm: `/tmp/expenses.csv\u0027: No such file or directory\n--2017-05-07 20:37:31--  https://data.gov.au/dataset/f84b9baf-c1c1-437c-8c1e-654b2829848c/resource/88399d53-d55c-466c-8f4a-6cb965d24d6d/download/healthexpenditurebyareaandsource.csv\nResolving data.gov.au (data.gov.au)... 54.252.191.23\nConnecting to data.gov.au (data.gov.au)|54.252.191.23|:443... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: 469727 (459K) [text/csv]\nSaving to: ‘/tmp/expenses.csv’\n\n     0K .......... .......... .......... .......... .......... 10%  200K 2s\n    50K .......... .......... .......... .......... .......... 21%  201K 2s\n   100K .......... .......... .......... .......... .......... 32% 3.11M 1s\n   150K .......... .......... .......... .......... .......... 43%  201K 1s\n   200K .......... .......... .......... .......... .......... 54% 9.52M 1s\n   250K .......... .......... .......... .......... .......... 65%  218K 1s\n   300K .......... .......... .......... .......... .......... 76% 5.70M 0s\n   350K .......... .......... .......... .......... .......... 87% 3.50M 0s\n   400K .......... .......... .......... .......... .......... 98%  206K 0s\n   450K ........                                              100% 94.5M\u003d1.3s\n\n2017-05-07 20:37:34 (363 KB/s) - ‘/tmp/expenses.csv’ saved [469727/469727]\n\nput: `/tmp/expenses.csv\u0027: File exists\n-rw-r--r--   1 root root    456.4 K 2017-05-07 20:37 /tmp/expenses.csv\n"
+          }
+        ]
+      },
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "rm: `/tmp/expenses.csv\u0027: No such file or directory\n--2015-09-16 00:12:44--  https://data.gov.au/dataset/f84b9baf-c1c1-437c-8c1e-654b2829848c/resource/88399d53-d55c-466c-8f4a-6cb965d24d6d/download/healthexpenditurebyareaandsource.csv\nResolving data.gov.au... 54.252.191.23\nConnecting to data.gov.au|54.252.191.23|:443... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: 469727 (459K) [text/csv]\nSaving to: “/tmp/expenses.csv”\n\n     0K .......... .......... .......... .......... .......... 10% 86.1K 5s\n    50K .......... .......... .......... .......... .......... 21%  256K 3s\n   100K .......... .......... .......... .......... .......... 32%  258K 2s\n   150K .......... .......... .......... .......... .......... 43%  261K 2s\n   200K .......... .......... .......... .......... .......... 54% 9.05M 1s\n   250K .......... .......... .......... .......... .......... 65%  264K 1s\n   300K .......... .......... .......... .......... .......... 76% 2.88M 0s\n   350K .......... .......... .......... .......... .......... 87%  281K 0s\n   400K .......... .......... .......... .......... .......... 98% 4.79M 0s\n   450K ........                                              100% 1.89M\u003d1.6s\n\n2015-09-16 00:12:47 (293 KB/s) - “/tmp/expenses.csv” saved [469727/469727]\n\n-rw-r--r--   1 zeppelin hdfs    456.4 K 2015-09-16 00:12 /tmp/expenses.csv\n"
+      },
+      "apps": [],
+      "jobName": "paragraph_1432436102907_-1607474083",
+      "id": "20150524-025502_1843984349",
+      "dateCreated": "May 24, 2015 2:55:02 AM",
+      "dateStarted": "May 7, 2017 8:37:30 PM",
+      "dateFinished": "May 7, 2017 8:37:36 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Read csv into RDD and count",
+      "text": "\nval dataset\u003dsc.textFile(\"/tmp/expenses.csv\")\ndataset.count()\ndataset.first()",
+      "user": "anonymous",
+      "dateUpdated": "May 7, 2017 8:37:43 PM",
+      "config": {
+        "colWidth": 12.0,
+        "title": true,
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {}
+            }
+          }
+        ],
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": []
+      },
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "dataset: org.apache.spark.rdd.RDD[String] \u003d /tmp/expenses.csv MapPartitionsRDD[1] at textFile at \u003cconsole\u003e:24\nres1: Long \u003d 6778\nres2: String \u003d 1997-98,NSW,Administration,Government,Australian Government,315\n"
+      },
+      "apps": [],
+      "jobName": "paragraph_1432331706188_1973803269",
+      "id": "20150522-145506_1520223608",
+      "dateCreated": "May 22, 2015 2:55:06 AM",
+      "dateStarted": "May 7, 2017 8:37:43 PM",
+      "dateFinished": "May 7, 2017 8:37:44 PM",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Register RDD as table",
+      "text": "\ncase class Health (year:  String, state: String, category:String, funding_src1: String, funding_scr2: String, spending: Integer)\nval health \u003d dataset.map(k\u003d\u003ek.split(\",\")).map(\n    k \u003d\u003e Health(k(0),k(1),k(2),k(3), k(4), k(5).toInt)\n    )\n// toDF() works only in spark 1.3.0.\n// For spark 1.1.x and spark 1.2.x,\n// use below instead:\n// health.registerTempTable(\"health_table\")\nhealth.toDF().registerTempTable(\"health_table\")",
+      "user": "anonymous",
+      "dateUpdated": "May 7, 2017 7:22:35 PM",
+      "config": {
+        "colWidth": 12.0,
+        "title": true,
+        "enabled": true,
+        "editorMode": "ace/mode/scala",
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [],
+              "values": [],
+              "groups": [],
+              "scatter": {}
+            }
+          }
+        ],
+        "editorSetting": {
+          "language": "scala",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": []
+      },
+      "result": {
+        "code": "SUCCESS",
+        "type": "TEXT",
+        "msg": "defined class Health\nhealth: org.apache.spark.rdd.RDD[Health] \u003d MapPartitionsRDD[3] at map at \u003cconsole\u003e:27\n"
+      },
+      "apps": [],
+      "jobName": "paragraph_1432331754078_156265313",
+      "id": "20150522-145554_1659286336",
+      "dateCreated": "May 22, 2015 2:55:54 AM",
+      "dateStarted": "May 7, 2017 7:22:35 PM",
+      "dateFinished": "May 7, 2017 7:22:35 PM",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Spending (in billions) by state",
+      "text": "%sql\nselect state, sum(spending)/1000 SpendinginBillions \nfrom health_table \ngroup by state \norder by SpendinginBillions desc",
+      "user": "anonymous",
+      "dateUpdated": "May 7, 2017 7:42:07 PM",
+      "config": {
+        "colWidth": 4.0,
+        "editorHide": false,
+        "title": true,
+        "tableHide": false,
+        "editorMode": "ace/mode/sql",
+        "enabled": true,
+        "results": [
+          {
+            "graph": {
+              "mode": "pieChart",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [
+                {
+                  "name": "state",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "values": [
+                {
+                  "name": "SpendinginBillions",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "scatter": {
+                "xAxis": {
+                  "name": "state",
+                  "index": 0.0,
+                  "aggr": "sum"
+                },
+                "yAxis": {
+                  "name": "SpendinginBillions",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              }
+            }
+          }
+        ],
+        "editorSetting": {
+          "language": "sql",
+          "editOnDblClick": false
+        }
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "ERROR",
+        "msg": []
+      },
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "state\tSpendinginBillions\nNSW\t482.366\nVIC\t360.217\nQLD\t289.676\nWA\t149.887\nSA\t114.623\nTAS\t34.294\nACT\t28.26\nNT\t18.915\n",
+        "comment": "",
+        "msgTable": [
+          [
+            {
+              "key": "SpendinginBillions",
+              "value": "NSW"
+            },
+            {
+              "key": "SpendinginBillions",
+              "value": "482.366"
+            }
+          ],
+          [
+            {
+              "value": "VIC"
+            },
+            {
+              "value": "360.217"
+            }
+          ],
+          [
+            {
+              "value": "QLD"
+            },
+            {
+              "value": "289.676"
+            }
+          ],
+          [
+            {
+              "value": "WA"
+            },
+            {
+              "value": "149.887"
+            }
+          ],
+          [
+            {
+              "value": "SA"
+            },
+            {
+              "value": "114.623"
+            }
+          ],
+          [
+            {
+              "value": "TAS"
+            },
+            {
+              "value": "34.294"
+            }
+          ],
+          [
+            {
+              "value": "ACT"
+            },
+            {
+              "value": "28.26"
+            }
+          ],
+          [
+            {
+              "value": "NT"
+            },
+            {
+              "value": "18.915"
+            }
+          ]
+        ],
+        "columnNames": [
+          {
+            "name": "state",
+            "index": 0.0,
+            "aggr": "sum"
+          },
+          {
+            "name": "SpendinginBillions",
+            "index": 1.0,
+            "aggr": "sum"
+          }
+        ],
+        "rows": [
+          [
+            "NSW",
+            "482.366"
+          ],
+          [
+            "VIC",
+            "360.217"
+          ],
+          [
+            "QLD",
+            "289.676"
+          ],
+          [
+            "WA",
+            "149.887"
+          ],
+          [
+            "SA",
+            "114.623"
+          ],
+          [
+            "TAS",
+            "34.294"
+          ],
+          [
+            "ACT",
+            "28.26"
+          ],
+          [
+            "NT",
+            "18.915"
+          ]
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1432331827930_795256615",
+      "id": "20150522-145707_2030296925",
+      "dateCreated": "May 22, 2015 2:57:07 AM",
+      "dateStarted": "May 7, 2017 7:42:07 PM",
+      "dateFinished": "May 7, 2017 7:42:07 PM",
+      "status": "ERROR",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Spending (In Billions) By Year",
+      "text": "%sql\nselect year,sum(spending)/1000 SpendinginBillions \nfrom health_table \ngroup by year \norder by SpendinginBillions\n",
+      "dateUpdated": "Sep 16, 2015 12:14:07 PM",
+      "config": {
+        "colWidth": 4.0,
+        "editorHide": false,
+        "title": true,
+        "tableHide": false,
+        "editorMode": "ace/mode/sql",
+        "enabled": true,
+        "results": [
+          {
+            "graph": {
+              "mode": "multiBarChart",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [
+                {
+                  "name": "year",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "values": [
+                {
+                  "name": "SpendinginBillions",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "scatter": {
+                "xAxis": {
+                  "name": "year",
+                  "index": 0.0,
+                  "aggr": "sum"
+                },
+                "yAxis": {
+                  "name": "SpendinginBillions",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "year\tSpendinginBillions\n1997-98\t65.705\n1998-99\t69.54\n1999-00\t73.084\n2000-01\t78.687\n2001-02\t82.895\n2002-03\t87.702\n2003-04\t90.617\n2004-05\t96.503\n2005-06\t99.076\n2006-07\t104.979\n2007-08\t112.106\n2008-09\t119.757\n2009-10\t124.767\n2010-11\t132.572\n2011-12\t140.248\n"
+          }
+        ]
+      },
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "year\tSpendinginBillions\n1997-98\t65.705\n1998-99\t69.54\n1999-00\t73.084\n2000-01\t78.687\n2001-02\t82.895\n2002-03\t87.702\n2003-04\t90.617\n2004-05\t96.503\n2005-06\t99.076\n2006-07\t104.979\n2007-08\t112.106\n2008-09\t119.757\n2009-10\t124.767\n2010-11\t132.572\n2011-12\t140.248\n",
+        "comment": "",
+        "msgTable": [
+          [
+            {
+              "key": "SpendinginBillions",
+              "value": "1997-98"
+            },
+            {
+              "key": "SpendinginBillions",
+              "value": "65.705"
+            }
+          ],
+          [
+            {
+              "value": "1998-99"
+            },
+            {
+              "value": "69.54"
+            }
+          ],
+          [
+            {
+              "value": "1999-00"
+            },
+            {
+              "value": "73.084"
+            }
+          ],
+          [
+            {
+              "value": "2000-01"
+            },
+            {
+              "value": "78.687"
+            }
+          ],
+          [
+            {
+              "value": "2001-02"
+            },
+            {
+              "value": "82.895"
+            }
+          ],
+          [
+            {
+              "value": "2002-03"
+            },
+            {
+              "value": "87.702"
+            }
+          ],
+          [
+            {
+              "value": "2003-04"
+            },
+            {
+              "value": "90.617"
+            }
+          ],
+          [
+            {
+              "value": "2004-05"
+            },
+            {
+              "value": "96.503"
+            }
+          ],
+          [
+            {
+              "value": "2005-06"
+            },
+            {
+              "value": "99.076"
+            }
+          ],
+          [
+            {
+              "value": "2006-07"
+            },
+            {
+              "value": "104.979"
+            }
+          ],
+          [
+            {
+              "value": "2007-08"
+            },
+            {
+              "value": "112.106"
+            }
+          ],
+          [
+            {
+              "value": "2008-09"
+            },
+            {
+              "value": "119.757"
+            }
+          ],
+          [
+            {
+              "value": "2009-10"
+            },
+            {
+              "value": "124.767"
+            }
+          ],
+          [
+            {
+              "value": "2010-11"
+            },
+            {
+              "value": "132.572"
+            }
+          ],
+          [
+            {
+              "value": "2011-12"
+            },
+            {
+              "value": "140.248"
+            }
+          ]
+        ],
+        "columnNames": [
+          {
+            "name": "year",
+            "index": 0.0,
+            "aggr": "sum"
+          },
+          {
+            "name": "SpendinginBillions",
+            "index": 1.0,
+            "aggr": "sum"
+          }
+        ],
+        "rows": [
+          [
+            "1997-98",
+            "65.705"
+          ],
+          [
+            "1998-99",
+            "69.54"
+          ],
+          [
+            "1999-00",
+            "73.084"
+          ],
+          [
+            "2000-01",
+            "78.687"
+          ],
+          [
+            "2001-02",
+            "82.895"
+          ],
+          [
+            "2002-03",
+            "87.702"
+          ],
+          [
+            "2003-04",
+            "90.617"
+          ],
+          [
+            "2004-05",
+            "96.503"
+          ],
+          [
+            "2005-06",
+            "99.076"
+          ],
+          [
+            "2006-07",
+            "104.979"
+          ],
+          [
+            "2007-08",
+            "112.106"
+          ],
+          [
+            "2008-09",
+            "119.757"
+          ],
+          [
+            "2009-10",
+            "124.767"
+          ],
+          [
+            "2010-11",
+            "132.572"
+          ],
+          [
+            "2011-12",
+            "140.248"
+          ]
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1432332006302_1582730344",
+      "id": "20150522-150006_2004946034",
+      "dateCreated": "May 22, 2015 3:00:06 AM",
+      "dateStarted": "Sep 16, 2015 12:14:07 PM",
+      "dateFinished": "Sep 16, 2015 12:14:10 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Spending (in billions) by area",
+      "text": "%sql\nselect category, sum(spending)/1000 SpendinginBillions \nfrom health_table \ngroup by category \norder by SpendinginBillions desc",
+      "dateUpdated": "Sep 16, 2015 12:14:11 PM",
+      "config": {
+        "colWidth": 4.0,
+        "editorHide": false,
+        "title": true,
+        "tableHide": false,
+        "editorMode": "ace/mode/sql",
+        "enabled": true,
+        "results": [
+          {
+            "graph": {
+              "mode": "table",
+              "height": 300.0,
+              "optionOpen": false,
+              "keys": [
+                {
+                  "name": "category",
+                  "index": 0.0,
+                  "aggr": "sum"
+                }
+              ],
+              "values": [
+                {
+                  "name": "SpendinginBillions",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              ],
+              "groups": [],
+              "scatter": {
+                "xAxis": {
+                  "name": "category",
+                  "index": 0.0,
+                  "aggr": "sum"
+                },
+                "yAxis": {
+                  "name": "SpendinginBillions",
+                  "index": 1.0,
+                  "aggr": "sum"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TABLE",
+            "data": "category\tSpendinginBillions\nPublic hospitals\t445.845\nMedical services\t272.507\nPrivate hospitals\t121.022\nBenefit-paid pharmaceuticals\t104.221\nDental services\t90.786\nCommunity health\t75.765\nCapital expenditure\t72.698\nAll other medications\t70.508\nOther health practitioners\t51.382\nAdministration\t41.029\nResearch\t40.074\nAids and appliances\t37.155\nPatient transport services\t28.174\nPublic health\t27.072\nMedical expense tax rebate\t0.0\n"
+          }
+        ]
+      },
+      "result": {
+        "code": "SUCCESS",
+        "type": "TABLE",
+        "msg": "category\tSpendinginBillions\nPublic hospitals\t445.845\nMedical services\t272.507\nPrivate hospitals\t121.022\nBenefit-paid pharmaceuticals\t104.221\nDental services\t90.786\nCommunity health\t75.765\nCapital expenditure\t72.698\nAll other medications\t70.508\nOther health practitioners\t51.382\nAdministration\t41.029\nResearch\t40.074\nAids and appliances\t37.155\nPatient transport services\t28.174\nPublic health\t27.072\nMedical expense tax rebate\t0.0\n",
+        "comment": "",
+        "msgTable": [
+          [
+            {
+              "key": "SpendinginBillions",
+              "value": "Public hospitals"
+            },
+            {
+              "key": "SpendinginBillions",
+              "value": "445.845"
+            }
+          ],
+          [
+            {
+              "value": "Medical services"
+            },
+            {
+              "value": "272.507"
+            }
+          ],
+          [
+            {
+              "value": "Private hospitals"
+            },
+            {
+              "value": "121.022"
+            }
+          ],
+          [
+            {
+              "value": "Benefit-paid pharmaceuticals"
+            },
+            {
+              "value": "104.221"
+            }
+          ],
+          [
+            {
+              "value": "Dental services"
+            },
+            {
+              "value": "90.786"
+            }
+          ],
+          [
+            {
+              "value": "Community health"
+            },
+            {
+              "value": "75.765"
+            }
+          ],
+          [
+            {
+              "value": "Capital expenditure"
+            },
+            {
+              "value": "72.698"
+            }
+          ],
+          [
+            {
+              "value": "All other medications"
+            },
+            {
+              "value": "70.508"
+            }
+          ],
+          [
+            {
+              "value": "Other health practitioners"
+            },
+            {
+              "value": "51.382"
+            }
+          ],
+          [
+            {
+              "value": "Administration"
+            },
+            {
+              "value": "41.029"
+            }
+          ],
+          [
+            {
+              "value": "Research"
+            },
+            {
+              "value": "40.074"
+            }
+          ],
+          [
+            {
+              "value": "Aids and appliances"
+            },
+            {
+              "value": "37.155"
+            }
+          ],
+          [
+            {
+              "value": "Patient transport services"
+            },
+            {
+              "value": "28.174"
+            }
+          ],
+          [
+            {
+              "value": "Public health"
+            },
+            {
+              "value": "27.072"
+            }
+          ],
+          [
+            {
+              "value": "Medical expense tax rebate"
+            },
+            {
+              "value": "0.0"
+            }
+          ]
+        ],
+        "columnNames": [
+          {
+            "name": "category",
+            "index": 0.0,
+            "aggr": "sum"
+          },
+          {
+            "name": "SpendinginBillions",
+            "index": 1.0,
+            "aggr": "sum"
+          }
+        ],
+        "rows": [
+          [
+            "Public hospitals",
+            "445.845"
+          ],
+          [
+            "Medical services",
+            "272.507"
+          ],
+          [
+            "Private hospitals",
+            "121.022"
+          ],
+          [
+            "Benefit-paid pharmaceuticals",
+            "104.221"
+          ],
+          [
+            "Dental services",
+            "90.786"
+          ],
+          [
+            "Community health",
+            "75.765"
+          ],
+          [
+            "Capital expenditure",
+            "72.698"
+          ],
+          [
+            "All other medications",
+            "70.508"
+          ],
+          [
+            "Other health practitioners",
+            "51.382"
+          ],
+          [
+            "Administration",
+            "41.029"
+          ],
+          [
+            "Research",
+            "40.074"
+          ],
+          [
+            "Aids and appliances",
+            "37.155"
+          ],
+          [
+            "Patient transport services",
+            "28.174"
+          ],
+          [
+            "Public health",
+            "27.072"
+          ],
+          [
+            "Medical expense tax rebate",
+            "0.0"
+          ]
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1432332063882_-271146387",
+      "id": "20150522-150103_460493658",
+      "dateCreated": "May 22, 2015 3:01:03 AM",
+      "dateStarted": "Sep 16, 2015 12:14:11 PM",
+      "dateFinished": "Sep 16, 2015 12:14:14 PM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "config": {
+        "colWidth": 12.0,
+        "graph": {
+          "mode": "table",
+          "height": 300.0,
+          "optionOpen": false,
+          "keys": [],
+          "values": [],
+          "groups": [],
+          "scatter": {}
+        },
+        "enabled": true,
+        "editorMode": "ace/mode/scala"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1432332860788_-828901477",
+      "id": "20150522-151420_2114334426",
+      "dateCreated": "May 22, 2015 3:14:20 AM",
+      "status": "READY",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "Demos / Spark / Australian Dataset",
+  "id": "2ANTDG878",
+  "angularObjects": {
+    "2CEKEY8ZT:shared_process": [],
+    "2CFTD1MUR:shared_process": [],
+    "2CG3MRM3Q:shared_process": [],
+    "2CF8KMCRF:shared_process": [],
+    "2CJ9H7HP1:shared_process": [],
+    "2CEKC89RV:shared_process": [],
+    "2CJA9VDYX:shared_process": [],
+    "2CGMTMKRE:shared_process": [],
+    "2CJ6NJZ79:shared_process": []
+  },
+  "config": {
+    "looknfeel": "default"
+  },
+  "info": {}
+}
