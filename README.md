@@ -1,4 +1,4 @@
-# Spark Zeppelin Server
+# Zeppelin for Spark + Hadoop (optional Hive)
 
 ## Build
 To build, 
