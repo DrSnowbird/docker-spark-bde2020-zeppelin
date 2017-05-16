@@ -13,12 +13,12 @@ echo "DATA_DIR=${DATA_DIR}"
 docker rm -f spark-notebook
 
 ## -- Starting all services
-docker-compose -f docker-compose-hive2.yml up -d namenode hive-metastore-postgresql
-docker-compose -f docker-compose-hive2.yml up -d datanode hive-metastore
-docker-compose -f docker-compose-hive2.yml up -d hive-server
-docker-compose -f docker-compose-hive2.yml up -d spark-master spark-worker
+docker-compose -f docker-compose-hive.yml up -d namenode hive-metastore-postgresql
+docker-compose -f docker-compose-hive.yml up -d datanode hive-metastore
+docker-compose -f docker-compose-hive.yml up -d hive-server
+docker-compose -f docker-compose-hive.yml up -d spark-master spark-worker
 sleep 8
-docker-compose -f docker-compose-hive2.yml up -d spark-notebook hue zeppelin
+docker-compose -f docker-compose-hive.yml up -d spark-notebook hue zeppelin
 
 my_ip=`ip route get 1|awk '{print $NF;exit}'`
 echo "Namenode: http://${my_ip}:50070"

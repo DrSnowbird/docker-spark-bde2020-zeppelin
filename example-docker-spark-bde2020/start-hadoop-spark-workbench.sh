@@ -12,7 +12,7 @@ echo "DATA_DIR=${DATA_DIR}"
 docker rm -f spark-notebook
 
 ## -- Starting all services
-docker-compose2 up -d
+docker-compose up -d
 
 my_ip=`ip route get 1|awk '{print $NF;exit}'`
 echo "Namenode: http://${my_ip}:50070"
