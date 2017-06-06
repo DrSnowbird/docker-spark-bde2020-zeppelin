@@ -88,7 +88,7 @@ services:
   zeppelin:
     image: openkbs/bde2020-zeppelin:2.1.0-hadoop2.8-hive-java8
     build:
-      context: .
+      context: ../
       args:
         APACHE_SPARK_VERSION: 2.1.0 
         APACHE_HADOOP_VERSION: 2.8.0 
