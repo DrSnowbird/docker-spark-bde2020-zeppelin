@@ -1,6 +1,10 @@
 pkgconfig
+ipykernel
+jupyter
+Pillow
 numpy
 scipy
 panda
 pandasql
 matplotlib
+sklearn
