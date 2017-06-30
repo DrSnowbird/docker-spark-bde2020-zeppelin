@@ -11,7 +11,7 @@ imageTag=openkbs/bde2020-zeppelin
 version=2.1.0-hadoop2.8-hive-java8
 
 ZEPPELIN_DOWNLOAD_URL=http://apache.cs.utah.edu/zeppelin 
-ZEPPELIN_VERSION=0.7.1 
+ZEPPELIN_VERSION=0.7.2 
 ZEPPELIN_PORT=8080 
 ZEPPELIN_INSTALL_DIR=/usr/lib 
 
