@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash -x
 
 # Reference: 
 # - https://docs.docker.com/engine/userguide/containers/dockerimages/
@@ -10,12 +10,13 @@
 imageTag=openkbs/bde2020-zeppelin
 version=2.1.0-hadoop2.8-hive-java8
 
-ZEPPELIN_DOWNLOAD_URL=http://apache.cs.utah.edu/zeppelin 
-ZEPPELIN_VERSION=0.7.1 
+ZEPPELIN_DOWNLOAD_URL=http://apache.cs.utah.edu/zeppelin
+#ZEPPELIN_DOWNLOAD_URL=http://www-us.apache.org/dist/zeppelin
+ZEPPELIN_VERSION=0.7.2 
 ZEPPELIN_PORT=8080 
 ZEPPELIN_INSTALL_DIR=/usr/lib 
 
-docker build -t ${imageTag}:${version} -t ${imageTag}:latest \
+docker build -t ${imageTag}:${version} \
 	--build-arg ZEPPELIN_DOWNLOAD_URL=${ZEPPELIN_DOWNLOAD_URL} \
 	--build-arg ZEPPELIN_VERSION=${ZEPPELIN_VERSION} \
 	--build-arg ZEPPELIN_PORT=${ZEPPELIN_PORT} \

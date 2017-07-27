@@ -48,7 +48,7 @@ services:
         APACHE_HADOOP_VERSION: 2.8.0 
         SPARK_MASTER: "spark://spark-master:7077" 
         ZEPPELIN_DOWNLOAD_URL: http://apache.cs.utah.edu/zeppelin 
-        ZEPPELIN_VERSION: 0.7.1 
+        ZEPPELIN_VERSION: 0.7.2 
         ZEPPELIN_PORT: 8080 
         ZEPPELIN_INSTALL_DIR: /usr/lib 
         ZEPPELIN_HOME: /usr/lib/zeppelin 

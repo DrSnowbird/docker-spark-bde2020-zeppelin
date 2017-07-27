@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ./example-docker-spark-bde2020
+
 echo "Usage: $(basename $0) <base_dir_for_data>"
 
 export DATA_DIR=${1:-${HOME}/data-docker/bde2020-hadoop-spark}/data
