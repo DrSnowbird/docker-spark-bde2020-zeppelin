@@ -91,15 +91,24 @@
       "jobName": "paragraph_1423500779206_-1502780787",
       "id": "20150210-015259_1403135953",
       "dateCreated": "Feb 10, 2015 1:52:59 AM",
+<<<<<<< HEAD
       "dateStarted": "Jul 27, 2017 3:44:37 PM",
       "dateFinished": "Jul 27, 2017 3:44:51 PM",
+=======
+      "dateStarted": "Jun 8, 2017 4:21:32 AM",
+      "dateFinished": "Jun 8, 2017 4:21:50 AM",
+>>>>>>> 2b861a2f93b33e8e51cc4a3de8aae3dccdba57ea
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%sql \nselect age, count(1) value\nfrom bank \nwhere age \u003c 30 \ngroup by age \norder by age",
       "user": "anonymous",
+<<<<<<< HEAD
       "dateUpdated": "Jul 27, 2017 3:44:58 PM",
+=======
+      "dateUpdated": "Jun 8, 2017 4:21:54 AM",
+>>>>>>> 2b861a2f93b33e8e51cc4a3de8aae3dccdba57ea
       "config": {
         "colWidth": 4.0,
         "results": [
@@ -136,8 +145,13 @@
       "jobName": "paragraph_1423500782552_-1439281894",
       "id": "20150210-015302_1492795503",
       "dateCreated": "Feb 10, 2015 1:53:02 AM",
+<<<<<<< HEAD
       "dateStarted": "Jul 27, 2017 3:44:58 PM",
       "dateFinished": "Jul 27, 2017 3:45:02 PM",
+=======
+      "dateStarted": "Jun 8, 2017 4:21:54 AM",
+      "dateFinished": "Jun 8, 2017 4:21:59 AM",
+>>>>>>> 2b861a2f93b33e8e51cc4a3de8aae3dccdba57ea
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -367,6 +381,7 @@
   "name": "Zeppelin Tutorial/Basic Features (Spark)",
   "id": "2A94M5J1Z",
   "angularObjects": {
+<<<<<<< HEAD
     "2CN6JU6TS:shared_process": [],
     "2CNYEXJBY:shared_process": [],
     "2CPKVJ275:shared_process": [],
@@ -386,6 +401,27 @@
     "2CN6MEXZM:shared_process": [],
     "2CQ7UKQDP:shared_process": [],
     "2CQAK1S6R:shared_process": []
+=======
+    "2CKXCN34M:shared_process": [],
+    "2CK8VQGDE:shared_process": [],
+    "2CN1T4C23:shared_process": [],
+    "2CJ88JW12:shared_process": [],
+    "2CJGSKNB5:shared_process": [],
+    "2CKRUY5SZ:shared_process": [],
+    "2CKJS79F7:shared_process": [],
+    "2CKPQ1EQK:shared_process": [],
+    "2CJYVB9E8:shared_process": [],
+    "2CK3AXNZC:shared_process": [],
+    "2CMXCUBMM:shared_process": [],
+    "2CK415J2N:shared_process": [],
+    "2CM4KG11T:shared_process": [],
+    "2CH9134QA:shared_process": [],
+    "2CKPJ8VXX:shared_process": [],
+    "2CJERNKAU:shared_process": [],
+    "2CHFD6WQK:shared_process": [],
+    "2CM2CSTK2:shared_process": [],
+    "2CK2N6WV2:shared_process": []
+>>>>>>> 2b861a2f93b33e8e51cc4a3de8aae3dccdba57ea
   },
   "config": {
     "looknfeel": "default"

@@ -43,4 +43,3 @@ For example, to start the entire "docker-spark-bde2020 and zeppelin without Hive
 ## See 
 See [big-data-europe/docker-spark README](https://github.com/big-data-europe/docker-spark).
 
-

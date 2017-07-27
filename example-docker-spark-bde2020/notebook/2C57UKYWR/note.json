@@ -79,16 +79,16 @@
     {
       "text": "%sh\n\nwget https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\nhadoop fs -put bank.csv .\n",
       "user": "anonymous",
-      "dateUpdated": "May 16, 2017 3:49:50 AM",
+      "dateUpdated": "Jun 8, 2017 3:08:58 PM",
       "config": {
         "colWidth": 12.0,
         "enabled": true,
         "results": {},
         "editorSetting": {
-          "language": "text",
+          "language": "sh",
           "editOnDblClick": false
         },
-        "editorMode": "ace/mode/text"
+        "editorMode": "ace/mode/sh"
       },
       "settings": {
         "params": {},
@@ -99,7 +99,7 @@
         "msg": [
           {
             "type": "TEXT",
-            "data": "--2017-05-16 03:49:51--  https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\nResolving s3.amazonaws.com (s3.amazonaws.com)... 54.231.72.194\nConnecting to s3.amazonaws.com (s3.amazonaws.com)|54.231.72.194|:443... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: 461474 (451K) [application/octet-stream]\nSaving to: ‘bank.csv’\n\n     0K .......... .......... .......... .......... .......... 11% 1.24M 0s\n    50K .......... .......... .......... .......... .......... 22% 2.13M 0s\n   100K .......... .......... .......... .......... .......... 33% 2.93M 0s\n   150K .......... .......... .......... .......... .......... 44% 3.44M 0s\n   200K .......... .......... .......... .......... .......... 55% 3.31M 0s\n   250K .......... .......... .......... .......... .......... 66% 3.72M 0s\n   300K .......... .......... .......... .......... .......... 77% 3.36M 0s\n   350K .......... .......... .......... .......... .......... 88% 4.28M 0s\n   400K .......... .......... .......... .......... .......... 99% 3.48M 0s\n   450K                                                       100% 1255G\u003d0.2s\n\n2017-05-16 03:49:52 (2.74 MB/s) - ‘bank.csv’ saved [461474/461474]\n\nput: `bank.csv\u0027: File exists\n"
+            "data": "--2017-06-08 15:08:59--  https://s3.amazonaws.com/apache-zeppelin/tutorial/bank/bank.csv\nResolving s3.amazonaws.com (s3.amazonaws.com)... 54.231.41.26\nConnecting to s3.amazonaws.com (s3.amazonaws.com)|54.231.41.26|:443... connected.\nHTTP request sent, awaiting response... 200 OK\nLength: 461474 (451K) [application/octet-stream]\nSaving to: ‘bank.csv.1’\n\n     0K .......... .......... .......... .......... .......... 11% 1.64M 0s\n    50K .......... .......... .......... .......... .......... 22% 2.17M 0s\n   100K .......... .......... .......... .......... .......... 33% 3.07M 0s\n   150K .......... .......... .......... .......... .......... 44% 4.06M 0s\n   200K .......... .......... .......... .......... .......... 55% 5.30M 0s\n   250K .......... .......... .......... .......... .......... 66% 3.53M 0s\n   300K .......... .......... .......... .......... .......... 77% 5.43M 0s\n   350K .......... .......... .......... .......... .......... 88% 3.53M 0s\n   400K .......... .......... .......... .......... .......... 99% 73.1K 0s\n   450K                                                       100% 1255G\u003d0.8s\n\n2017-06-08 15:09:00 (556 KB/s) - ‘bank.csv.1’ saved [461474/461474]\n\nput: `bank.csv\u0027: File exists\n"
           },
           {
             "type": "TEXT",
@@ -111,22 +111,22 @@
       "jobName": "paragraph_1485058437578_-1906301827",
       "id": "20170122-121357_640055590",
       "dateCreated": "Jan 22, 2017 12:13:57 PM",
-      "dateStarted": "May 16, 2017 3:49:50 AM",
-      "dateFinished": "May 16, 2017 3:49:53 AM",
+      "dateStarted": "Jun 8, 2017 3:08:58 PM",
+      "dateFinished": "Jun 8, 2017 3:09:01 PM",
       "status": "ERROR",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%pig\n\nbankText \u003d load \u0027bank.csv\u0027 using PigStorage(\u0027;\u0027);\nbank \u003d foreach bankText generate $0 as age, $1 as job, $2 as marital, $3 as education, $5 as balance; \nbank \u003d filter bank by age !\u003d \u0027\"age\"\u0027;\nbank \u003d foreach bank generate (int)age, REPLACE(job,\u0027\"\u0027,\u0027\u0027) as job, REPLACE(marital, \u0027\"\u0027, \u0027\u0027) as marital, (int)(REPLACE(balance, \u0027\"\u0027, \u0027\u0027)) as balance;\n\n-- The following statement is optional, it depends on whether your needs.\n-- store bank into \u0027clean_bank.csv\u0027 using PigStorage(\u0027;\u0027);\n\n\n",
       "user": "anonymous",
-      "dateUpdated": "May 16, 2017 3:50:04 AM",
+      "dateUpdated": "Jun 8, 2017 3:09:14 PM",
       "config": {
         "colWidth": 12.0,
-        "editorMode": "ace/mode/text",
+        "editorMode": "ace/mode/pig",
         "results": {},
         "enabled": true,
         "editorSetting": {
-          "language": "text",
+          "language": "pig",
           "editOnDblClick": false
         }
       },
@@ -142,15 +142,15 @@
       "jobName": "paragraph_1483277250237_-466604517",
       "id": "20161228-140640_1560978333",
       "dateCreated": "Jan 1, 2017 9:27:30 PM",
-      "dateStarted": "May 16, 2017 3:50:04 AM",
-      "dateFinished": "May 16, 2017 3:50:06 AM",
+      "dateStarted": "Jun 8, 2017 3:09:14 PM",
+      "dateFinished": "Jun 8, 2017 3:09:16 PM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%pig.query\n\nbank_data \u003d filter bank by age \u003c 30;\nb \u003d group bank_data by age;\nforeach b generate group, COUNT($1);\n\n",
       "user": "anonymous",
-      "dateUpdated": "May 16, 2017 3:50:13 AM",
+      "dateUpdated": "Jun 8, 2017 4:23:01 AM",
       "config": {
         "colWidth": 4.0,
         "editorMode": "ace/mode/text",
@@ -187,15 +187,15 @@
       "jobName": "paragraph_1483277250238_-465450270",
       "id": "20161228-140730_1903342877",
       "dateCreated": "Jan 1, 2017 9:27:30 PM",
-      "dateStarted": "May 16, 2017 3:50:13 AM",
-      "dateFinished": "May 16, 2017 3:50:20 AM",
+      "dateStarted": "Jun 8, 2017 4:23:01 AM",
+      "dateFinished": "Jun 8, 2017 4:23:07 AM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%pig.query\n\nbank_data \u003d filter bank by age \u003c ${maxAge\u003d40};\nb \u003d group bank_data by age;\nforeach b generate group, COUNT($1) as count;",
       "user": "anonymous",
-      "dateUpdated": "May 16, 2017 3:50:22 AM",
+      "dateUpdated": "Jun 8, 2017 4:23:13 AM",
       "config": {
         "colWidth": 4.0,
         "editorMode": "ace/mode/text",
@@ -240,15 +240,15 @@
       "jobName": "paragraph_1483277250239_-465835019",
       "id": "20161228-154918_1551591203",
       "dateCreated": "Jan 1, 2017 9:27:30 PM",
-      "dateStarted": "May 16, 2017 3:50:22 AM",
-      "dateFinished": "May 16, 2017 3:50:28 AM",
+      "dateStarted": "Jun 8, 2017 4:23:13 AM",
+      "dateFinished": "Jun 8, 2017 4:23:19 AM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
     {
       "text": "%pig.query\n\nbank_data \u003d filter bank by marital\u003d\u003d\u0027${marital\u003dsingle,single|divorced|married}\u0027;\nb \u003d group bank_data by age;\nforeach b generate group, COUNT($1) as count;\n\n\n",
       "user": "anonymous",
-      "dateUpdated": "May 16, 2017 3:50:31 AM",
+      "dateUpdated": "Jun 8, 2017 4:23:22 AM",
       "config": {
         "colWidth": 4.0,
         "editorMode": "ace/mode/text",
@@ -305,8 +305,8 @@
       "jobName": "paragraph_1483277250240_-480070728",
       "id": "20161228-142259_575675591",
       "dateCreated": "Jan 1, 2017 9:27:30 PM",
-      "dateStarted": "May 16, 2017 3:50:31 AM",
-      "dateFinished": "May 16, 2017 3:50:37 AM",
+      "dateStarted": "Jun 8, 2017 4:23:22 AM",
+      "dateFinished": "Jun 8, 2017 4:23:27 AM",
       "status": "FINISHED",
       "progressUpdateIntervalMs": 500
     },
@@ -330,25 +330,25 @@
   "name": "Zeppelin Tutorial/Using Pig for querying data",
   "id": "2C57UKYWR",
   "angularObjects": {
-    "2CGRQDMB5:shared_process": [],
-    "2CHEHYWXA:shared_process": [],
-    "2CHSJ64FE:shared_process": [],
-    "2CJ5ZPDCN:shared_process": [],
-    "2CK4W2Q58:shared_process": [],
-    "2CGAGCY83:shared_process": [],
-    "2CJQB2WMQ:shared_process": [],
-    "2CFFN3B9A:shared_process": [],
-    "2CJE2Y7MS:shared_process": [],
-    "2CK32NN3F:shared_process": [],
-    "2CGQFDZ5P:shared_process": [],
-    "2CJ5DDECU:shared_process": [],
-    "2CGXHJ16F:shared_process": [],
-    "2CK59HG29:shared_process": [],
-    "2CGTNFWUN:shared_process": [],
-    "2CFEN13AS:shared_process": [],
-    "2CFXR9RDH:shared_process": [],
-    "2CF9YGHC6:shared_process": [],
-    "2CHJFJNJC:shared_process": []
+    "2CKXCN34M:shared_process": [],
+    "2CK8VQGDE:shared_process": [],
+    "2CN1T4C23:shared_process": [],
+    "2CJ88JW12:shared_process": [],
+    "2CJGSKNB5:shared_process": [],
+    "2CKRUY5SZ:shared_process": [],
+    "2CKJS79F7:shared_process": [],
+    "2CKPQ1EQK:shared_process": [],
+    "2CJYVB9E8:shared_process": [],
+    "2CK3AXNZC:shared_process": [],
+    "2CMXCUBMM:shared_process": [],
+    "2CK415J2N:shared_process": [],
+    "2CM4KG11T:shared_process": [],
+    "2CH9134QA:shared_process": [],
+    "2CKPJ8VXX:shared_process": [],
+    "2CJERNKAU:shared_process": [],
+    "2CHFD6WQK:shared_process": [],
+    "2CM2CSTK2:shared_process": [],
+    "2CK2N6WV2:shared_process": []
   },
   "config": {},
   "info": {}
