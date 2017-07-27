@@ -45,7 +45,7 @@ WORKDIR ${ZEPPELIN_INSTALL_DIR}
 #    && rm /tmp/${ZEPPELIN_PKG_NAME}.tgz
 
 #### ---- (Deployment mode use) Zeppelin Installation (Download from Internet -- Deployment) ----
-#e.g. RUN wget -c http://apache.cs.utah.edu/zeppelin/zeppelin-0.7.1/zeppelin-0.7.1-bin-all.tgz
+#e.g. RUN wget -c http://apache.cs.utah.edu/zeppelin/zeppelin-0.7.2/zeppelin-0.7.2-bin-all.tgz
 RUN wget -c ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG_NAME}.tgz \
     && tar xvf ${ZEPPELIN_PKG_NAME}.tgz \
     && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \

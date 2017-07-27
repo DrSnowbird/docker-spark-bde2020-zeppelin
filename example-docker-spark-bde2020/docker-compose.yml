@@ -52,7 +52,7 @@ services:
         ZEPPELIN_PORT: 8080 
         ZEPPELIN_INSTALL_DIR: /usr/lib 
         ZEPPELIN_HOME: /usr/lib/zeppelin 
-        ZEPPELIN_PKG_NAME: zeppelin-0.7.1-bin-all 
+        ZEPPELIN_PKG_NAME: zeppelin-0.7.2-bin-all 
     container_name: zeppelin
 #    depends_on:
 #      - spark-master
