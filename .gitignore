@@ -3,3 +3,5 @@ data/
 *.tar.gz
 *tgz
 *swp
+tmp/
+notebook/

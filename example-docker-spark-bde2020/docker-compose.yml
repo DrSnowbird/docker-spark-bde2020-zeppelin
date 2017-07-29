@@ -40,19 +40,19 @@ services:
     env_file:
       - ./hadoop.env
   zeppelin:
-    image: openkbs/bde2020-zeppelin:2.1.0-hadoop2.8-hive-java8
-    build:
-      context: ../
-      args:
-        APACHE_SPARK_VERSION: 2.1.0 
-        APACHE_HADOOP_VERSION: 2.8.0 
-        SPARK_MASTER: "spark://spark-master:7077" 
-        ZEPPELIN_DOWNLOAD_URL: http://apache.cs.utah.edu/zeppelin 
-        ZEPPELIN_VERSION: 0.7.2 
-        ZEPPELIN_PORT: 8080 
-        ZEPPELIN_INSTALL_DIR: /usr/lib 
-        ZEPPELIN_HOME: /usr/lib/zeppelin 
-        ZEPPELIN_PKG_NAME: zeppelin-0.7.2-bin-all 
+    image: openkbs/docker-spark-bde2020-zeppelin
+#    build:
+#      context: ../
+#      args:
+#        APACHE_SPARK_VERSION: 2.1.0 
+#        APACHE_HADOOP_VERSION: 2.8.0 
+#        SPARK_MASTER: "spark://spark-master:7077" 
+#        ZEPPELIN_DOWNLOAD_URL: http://apache.cs.utah.edu/zeppelin 
+#        ZEPPELIN_VERSION: 0.7.2 
+#        ZEPPELIN_PORT: 8080 
+#        ZEPPELIN_INSTALL_DIR: /usr/lib 
+#        ZEPPELIN_HOME: /usr/lib/zeppelin 
+#        ZEPPELIN_PKG_NAME: zeppelin-${ZEPPELIN_VERSION}-bin-all 
     container_name: zeppelin
 #    depends_on:
 #      - spark-master
@@ -71,9 +71,9 @@ services:
     env_file:
       - ./hadoop-hive.env
     volumes:
-      - ./data:/usr/lib/zeppelin/data
-      - ./notebook:/usr/lib/zeppelin/notebook
-    command: /usr/lib/zeppelin/bin/zeppelin.sh
+      - ${HOME}/data-docker/docker-spark-bde2020-zeppelin/./data:/usr/lib/zeppelin/data
+#      - ${HOME}/data-docker/docker-spark-bde2020-zeppelin/./notebook:/usr/lib/zeppelin/notebook
+#    command: /usr/lib/zeppelin/bin/zeppelin.sh
     
   spark-notebook:
     image: bde2020/spark-notebook:2.1.0-hadoop2.8-hive

@@ -6,7 +6,7 @@ echo "Usage: "
 echo "  ${0} <comment> <repo-name/repo-tag>"
 echo
 
-imageTag=${2:-openkbs/bde2020-zeppelin}
+imageTag=${2:-openkbs/docker-spark-bde2020-zeppelin}
 version=2.1.0-hadoop2.8-hive-java8
 comment=${1:-"push ${imageTag}:${version}"}
 

@@ -3,10 +3,12 @@
 echo "Usage: $(basename $0) <base_dir_for_data>"
 
 export DATA_DIR=${1:-${HOME}/data-docker/bde2020-hadoop-spark}/data
-
+export NOTEBOOK_DIR=${1:-${HOME}/data-docker/bde2020-hadoop-spark}/notebook
 mkdir -p ${DATA_DIR}
+mkdir -p ${NOTEBOOK_DIR}
 
 echo "DATA_DIR=${DATA_DIR}"
+echo "NOTEBOOK_DIR=${NOTEBOOK_DIR}"
 
 ## -- some issue with restarting spark-notebook
 ## -- workaround: remove old instance first
@@ -18,7 +20,10 @@ docker-compose -f docker-compose-hive.yml up -d datanode hive-metastore
 docker-compose -f docker-compose-hive.yml up -d hive-server
 docker-compose -f docker-compose-hive.yml up -d spark-master spark-worker
 sleep 8
-docker-compose -f docker-compose-hive.yml up -d spark-notebook hue zeppelin
+docker-compose -f docker-compose-hive.yml up -d spark-notebook hue
+
+#docker-compose -f docker-compose-hive.yml up -d --build zeppelin
+docker-compose -f docker-compose-hive.yml up -d zeppelin
 
 my_ip=`ip route get 1|awk '{print $NF;exit}'`
 echo "Namenode: http://${my_ip}:50070"

@@ -6,8 +6,9 @@ echo "Usage: "
 echo "  ${0} <instanceName>"
 echo
 
-imageTag=openkbs/bde2020-zeppelin:2.1.0-hadoop2.8-hive-java8
-version=2.1.0-hadoop2.8-hive-java8
+imageTag=openkbs/docker-spark-bde2020-zeppelin
+#version=2.1.0-hadoop2.8-hive-java8
+version=latest
 
 dockerVolume_Data=data
 #docker_volume_config=config
@@ -23,7 +24,7 @@ mkdir -p ./data
 
 echo "(example)"
 
-docker run --rm -d --name ${instanceName} \
+docker run --rm -it --name ${instanceName} \
     -p 29090:8080 \
 	${imageTag}:${version}
 

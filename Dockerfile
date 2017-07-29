@@ -8,22 +8,24 @@ ARG APACHE_HADOOP_VERSION=2.8.0
 ARG SPARK_MASTER="spark://spark-master:7077" 
 ARG ZEPPELIN_DOWNLOAD_URL=http://apache.cs.utah.edu/zeppelin
 #ARG ZEPPELIN_DOWNLOAD_URL=http://www-us.apache.org/dist/zeppelin
-ARG ZEPPELIN_VERSION=${ZEPPELIN_VERSION:-0.7.2}
-ARG ZEPPELIN_PORT=8080 
 ARG ZEPPELIN_INSTALL_DIR=/usr/lib 
 ARG ZEPPELIN_HOME=${ZEPPELIN_INSTALL_DIR}/zeppelin 
-ARG ZEPPELIN_PKG_NAME=zeppelin-${ZEPPELIN_VERSION}-bin-all 
+ARG ZEPPELIN_VERSION=${ZEPPELIN_VERSION:-0.7.2}
+ARG ZEPPELIN_PKG_NAME=zeppelin-${ZEPPELIN_VERSION:-0.7.2}-bin-all 
+ARG ZEPPELIN_PORT=8080 
 
 #### ---- Host Environment variables ----
 ENV APACHE_SPARK_VERSION=${APACHE_SPARK_VERSION} 
 ENV APACHE_HADOOP_VERSION=${APACHE_HADOOP_VERSION} 
 ENV SPARK_MASTER=${SPARK_MASTER} 
-ENV ZEPPELIN_VERSION=${ZEPPELIN_VERSION} 
 ENV ZEPPELIN_HOME=${ZEPPELIN_HOME} 
-ENV ZEPPELIN_PORT=${ZEPPELIN_PORT} 
 ENV ZEPPELIN_CONF_DIR=${ZEPPELIN_HOME}/conf 
 ENV ZEPPELIN_DATA_DIR=${ZEPPELIN_HOME}/data 
 ENV ZEPPELIN_NOTEBOOK_DIR=${ZEPPELIN_HOME}/notebook 
+ENV ZEPPELIN_DOWNLOAD_URL=${ZEPPELIN_DOWNLOAD_URL}
+ENV ZEPPELIN_INSTALL_DIR=${ZEPPELIN_INSTALL_DIR}
+ENV ZEPPELIN_VERSION=${ZEPPELIN_VERSION} 
+ENV ZEPPELIN_PORT=${ZEPPELIN_PORT} 
 
 #### ---- Python 3 ----
 COPY requirements.txt ./
@@ -37,28 +39,29 @@ RUN apt-get update -y \
 WORKDIR ${ZEPPELIN_INSTALL_DIR}
 
 #### ---- (Interim mode) Zeppelin Installation (using local host tar file) ----
-#COPY ${ZEPPELIN_PKG_NAME}.tgz /tmp/
-#RUN tar -xvf /tmp/${ZEPPELIN_PKG_NAME}.tgz -C /usr/lib/ \
-#    && chown -R root ${ZEPPELIN_PKG_NAME} \
-#    && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \ 
-#    && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
-#    && rm /tmp/${ZEPPELIN_PKG_NAME}.tgz
+COPY ${ZEPPELIN_PKG_NAME}.tgz /tmp/
+RUN tar -xvf /tmp/${ZEPPELIN_PKG_NAME}.tgz -C /usr/lib/ \
+    && chown -R root ${ZEPPELIN_PKG_NAME} \
+    && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \ 
+    && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
+    && rm /tmp/${ZEPPELIN_PKG_NAME}.tgz
 
 #### ---- (Deployment mode use) Zeppelin Installation (Download from Internet -- Deployment) ----
 #e.g. RUN wget -c http://apache.cs.utah.edu/zeppelin/zeppelin-0.7.2/zeppelin-0.7.2-bin-all.tgz
-RUN wget -c ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG_NAME}.tgz \
-    && tar xvf ${ZEPPELIN_PKG_NAME}.tgz \
-    && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \
-    && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
-    && rm -f ${ZEPPELIN_PKG_NAME}.tgz
+#RUN wget -c ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG_NAME}.tgz \
+#    && tar xvf ${ZEPPELIN_PKG_NAME}.tgz \
+#    && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \
+#    && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
+#    && rm -f ${ZEPPELIN_PKG_NAME}.tgz
 
 #### ---- default config is ok ----
 #COPY conf/zeppelin-site.xml ${ZEPPELIN_HOME}/conf/zeppelin-site.xml
 #COPY conf/zeppelin-env.sh ${ZEPPELIN_HOME}/conf/zeppelin-env.sh
-
+COPY worker.sh /
 #### ---- SparkR ----
 # TO-DO if needed
 # (see https://github.com/rocker-org/rocker/blob/master/r-base/Dockerfile)
+#RUN apt-get install r-base -y
 
 #RUN mkdir -p ${ZEPPELIN_HOME}/data
 
