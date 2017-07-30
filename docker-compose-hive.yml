@@ -28,9 +28,6 @@ services:
       - ${HOME}/data-docker/docker-spark-bde2020-zeppelin/data/datanode:/hadoop/dfs/data
     environment:
       - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
-    depends_on:
-      namenode:
-        condition: service_healthy
     healthcheck:
       interval: 5s
       retries: 10
@@ -41,6 +38,45 @@ services:
     networks:
       - spark-net
       
+  hive-server:
+    image: bde2020/hive:2.1.0-postgresql-metastore
+    container_name: hive-server
+    env_file:
+      - ./hadoop-hive.env
+    environment:
+      - HIVE_CORE_CONF_javax_jdo_option_ConnectionURL=jdbc:postgresql://hive-metastore/metastore
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    depends_on:
+      - namenode
+    healthcheck:
+      interval: 5s
+      retries: 10
+    ports:
+      - "10000:10000"
+    networks:
+      - spark-net
+      
+  hive-metastore:
+    image: bde2020/hive:2.1.0-postgresql-metastore
+    container_name: hive-metastore
+    env_file:
+      - ./hadoop-hive.env
+    environment:
+      - HIVE_CORE_CONF_javax_jdo_option_ConnectionURL=jdbc:postgresql://hive-metastore/metastore
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    command: /opt/hive/bin/hive --service metastore
+    networks:
+      - spark-net
+    
+  hive-metastore-postgresql:
+    image: bde2020/hive-metastore-postgresql:2.1.0
+    container_name: hive-metastore-postgresql
+    environment:
+      - HIVE_CORE_CONF_javax_jdo_option_ConnectionURL=jdbc:postgresql://hive-metastore/metastore
+      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
+    networks:
+      - spark-net
+    
   spark-master:
     image: bde2020/spark-master:2.1.0-hadoop2.8-hive-java8
     container_name: spark-master
@@ -50,10 +86,8 @@ services:
     environment:
       - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
     depends_on:
-      namenode:
-        condition: service_healthy
-      datanode:
-        condition: service_healthy
+      - namenode
+      - datanode
     healthcheck:
       interval: 5s
       retries: 10 
@@ -71,9 +105,6 @@ services:
       - SPARK_MASTER=spark://spark-master:7077
       - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
       - HIVE_CORE_CONF_javax_jdo_option_ConnectionURL=jdbc:postgresql://hive-metastore/metastore
-    depends_on:
-      spark-master:
-        condition: service_healthy
     healthcheck:
       interval: 5s
       retries: 12 
@@ -97,7 +128,7 @@ services:
         ZEPPELIN_PORT: 8080 
         ZEPPELIN_INSTALL_DIR: /usr/lib 
         ZEPPELIN_HOME: /usr/lib/zeppelin 
-        ZEPPELIN_PKG_NAME: zeppelin-${ZEPPELIN_VERSION}-bin-all 
+        ZEPPELIN_PKG_NAME: "zeppelin-${ZEPPELIN_VERSION:-0.7.2}-bin-all"
     container_name: zeppelin
     environment:
       CORE_CONF_fs_defaultFS: "hdfs://namenode:8020"
@@ -116,13 +147,11 @@ services:
       - ${HOME}/data-docker/docker-spark-bde2020-zeppelin/data:/usr/lib/zeppelin/data:rw
       - ${HOME}/data-docker/docker-spark-bde2020-zeppelin/notebook:/usr/lib/zeppelin/notebook:rw
     depends_on:
-      spark-master:
-        condition: service_healthy
-      namenode:
-        condition: service_healthy
+      - spark-master
+      - namenode
     networks:
       - spark-net
-        
+    
   spark-notebook:
     image: bde2020/spark-notebook:2.1.0-hadoop2.8-hive
     container_name: spark-notebook
@@ -131,10 +160,9 @@ services:
     ports:
       - 9001:9001
     depends_on:
-      spark-master:
-        condition: service_healthy
+      - spark-master
     networks:
-      - spark-net
+      - spark-net 
 
   hue:
     image: bde2020/hdfs-filebrowser:3.11
@@ -144,8 +172,7 @@ services:
     environment:
       - NAMENODE_HOST=namenode
     depends_on:
-      namenode:
-        condition: service_healthy
+      - namenode
     networks:
       - spark-net
 

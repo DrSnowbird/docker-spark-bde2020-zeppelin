@@ -18,9 +18,8 @@ To build,
 ```
 docker-compose -f docker-compose-hive.yml up -d zeppelin
 ```
-## Run - entire "docker-spark-bde2020 w/ Zeppelin" (offered by this docker image/build)"
-To see how this Container work with with the entire [big-data-europe/docker-hadoop-spark-workbench](https://github.com/big-data-europe/docker-hadoop-spark-workbench), go to "./example-docker-spark-bde2020" directory to explore the entire suite build. 
 
+## Run - The entire suite - Hadoop + Spark + (Hive) + Zeppelin + SparkNotebook + Hue
 There two options to run the entire suite of "docker-spark-bde2020"
 * start-hadoop-spark-workbench.sh (no Hive support)
 * start-hadoop-spark-workbench-with-hive.sh (with Hive support)
@@ -33,6 +32,9 @@ For example, to start the entire "docker-spark-bde2020 and zeppelin without Hive
 ```
 ./start-hadoop-spark-workbench.sh
 ```
+
+## Reference to BDE2020 projects
+To see how this Container work with with the entire [big-data-europe/docker-hadoop-spark-workbench](https://github.com/big-data-europe/docker-hadoop-spark-workbench), go to "./example-docker-spark-bde2020" directory to explore the entire suite build. 
 
 ## Docs
 * [Zeppelin docker for BDE 2020 project](https://github.com/big-data-europe/docker-zeppelin)

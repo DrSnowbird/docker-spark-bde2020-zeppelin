@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd ./example-docker-spark-bde2020
-
 echo "Usage: $(basename $0) <docker_file> <base_dir_for_data>"
 
 #### ---- Start docker service ----
@@ -27,12 +25,13 @@ docker rm -f spark-notebook
 #### ---- Starting all services ----
 DOCKER_CMD="docker-compose -f ${DOCKER_FILE} up -d "
 CONTAINER_LIST="\
-    namenode hive-metastore-postgresql \
-    datanode hive-metastore hive-server spark-master spark-worker \
-    hive-server \
-    spark-master spark-worker \
+    namenode datanode \
+    hive-metastore-postgresql hive-metastore hive-server hive-server \
+    spark-master \
+    spark-worker \
     wait/10 \
-    spark-notebook hue \
+    spark-notebook \
+    hue \
     zeppelin"
 for c in $CONTAINER_LIST; do
     if [[ "$c" =~ wait ]]; then

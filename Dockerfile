@@ -24,7 +24,8 @@ ENV ZEPPELIN_DATA_DIR=${ZEPPELIN_HOME}/data
 ENV ZEPPELIN_NOTEBOOK_DIR=${ZEPPELIN_HOME}/notebook 
 ENV ZEPPELIN_DOWNLOAD_URL=${ZEPPELIN_DOWNLOAD_URL}
 ENV ZEPPELIN_INSTALL_DIR=${ZEPPELIN_INSTALL_DIR}
-ENV ZEPPELIN_VERSION=${ZEPPELIN_VERSION} 
+ENV ZEPPELIN_VERSION=${ZEPPELIN_VERSION:-0.7.2} 
+ENV ZEPPELIN_PKG_NAME=zeppelin-${ZEPPELIN_VERSION}-bin-all 
 ENV ZEPPELIN_PORT=${ZEPPELIN_PORT} 
 
 #### ---- Python 3 ----
@@ -39,20 +40,20 @@ RUN apt-get update -y \
 WORKDIR ${ZEPPELIN_INSTALL_DIR}
 
 #### ---- (Interim mode) Zeppelin Installation (using local host tar file) ----
-#COPY ${ZEPPELIN_PKG_NAME}.tgz /tmp/
-#RUN tar -xvf /tmp/${ZEPPELIN_PKG_NAME}.tgz -C /usr/lib/ \
-#    && chown -R root ${ZEPPELIN_PKG_NAME} \
-#    && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \ 
-#    && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
-#    && rm /tmp/${ZEPPELIN_PKG_NAME}.tgz
+COPY ${ZEPPELIN_PKG_NAME}.tgz /tmp/
+RUN tar -xvf /tmp/${ZEPPELIN_PKG_NAME}.tgz -C /usr/lib/ \
+    && chown -R root ${ZEPPELIN_PKG_NAME} \
+    && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \ 
+    && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
+    && rm /tmp/${ZEPPELIN_PKG_NAME}.tgz
 
 #### ---- (Deployment mode use) Zeppelin Installation (Download from Internet -- Deployment) ----
 #e.g. RUN wget -c http://apache.cs.utah.edu/zeppelin/zeppelin-0.7.2/zeppelin-0.7.2-bin-all.tgz
-RUN wget -c ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG_NAME}.tgz \
-    && tar xvf ${ZEPPELIN_PKG_NAME}.tgz \
-    && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \
-    && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
-    && rm -f ${ZEPPELIN_PKG_NAME}.tgz
+#RUN wget -c ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG_NAME}.tgz \
+#    && tar xvf ${ZEPPELIN_PKG_NAME}.tgz \
+#    && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \
+#    && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
+#    && rm -f ${ZEPPELIN_PKG_NAME}.tgz
 
 #### ---- default config is ok ----
 #COPY conf/zeppelin-site.xml ${ZEPPELIN_HOME}/conf/zeppelin-site.xml
@@ -76,9 +77,11 @@ VOLUME ${ZEPPELIN_HOME}/data
 
 EXPOSE ${ZEPPELIN_PORT}
 
+#ENV SPARK_SUBMIT_OPTIONS "--jars /opt/zeppelin/sansa-examples-spark-2016-12.jar"
+
 WORKDIR ${ZEPPELIN_HOME}
 
-CMD ["/opt/zeppelin/bin/zeppelin.sh"]
+CMD ["/usr/lib/zeppelin/bin/zeppelin.sh"]
 
 
 
