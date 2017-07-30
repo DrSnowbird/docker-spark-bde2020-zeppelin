@@ -15,7 +15,7 @@ dockerVolume_Data=data
 dockerVolume_Notebook=notebook
 targetHome=${ZEPPELIN_HOME:-/usr/bin/zeppelin}
 
-local_dir=/mnt/data/docker/$(basename ${imageTag})
+local_dir=${HOME}/data-docker/$(basename ${imageTag})
 
 #instanceName=my-${1:-${imageTag%/*}}_$RANDOM
 instanceName=my-${1:-${imageTag##*/}}
@@ -26,10 +26,9 @@ echo "(example)"
 
 docker run --rm -it --name ${instanceName} \
     -p 29090:8080 \
-	${imageTag}:${version}
-
-#	-v ${local_dir}/${dockerVolume_Notebook}:${targetHome}/${dockerVolume_Notebook} \
-#	-v ${local_dir}/${dockerVolume_Data}:${targetHome}/${dockerVolume_Data} \
+	-v ${local_dir}/${dockerVolume_Notebook}:${targetHome}/${dockerVolume_Notebook} \
+	-v ${local_dir}/${dockerVolume_Data}:${targetHome}/${dockerVolume_Data} \
+	${imageTag}
 
 echo ">>> Docker Status"
 docker ps -a |grep zeppelin

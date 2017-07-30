@@ -32,7 +32,7 @@ services:
     env_file:
       - ./hadoop-hive.env
     volumes:
-      - ${HOME}/data-docker/docker-spark-bde2020-zeppelin/data:/usr/lib/zeppelin/data
- #     - ${HOME}/data-docker/docker-spark-bde2020-zeppelin/notebook:/usr/lib/zeppelin/notebook
- #   command: /usr/lib/zeppelin/bin/zeppelin.sh
+      - ${HOME}/data-docker/docker-spark-bde2020-zeppelin/data:/usr/lib/zeppelin/data:rw
+      - ${HOME}/data-docker/docker-spark-bde2020-zeppelin/notebook:/usr/lib/zeppelin/notebook:rw
+    command: /usr/lib/zeppelin/bin/zeppelin.sh
 
