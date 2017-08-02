@@ -40,20 +40,20 @@ RUN apt-get update -y \
 WORKDIR ${ZEPPELIN_INSTALL_DIR}
 
 #### ---- (Interim mode) Zeppelin Installation (using local host tar file) ----
-#COPY ${ZEPPELIN_PKG_NAME}.tgz /tmp/
-#RUN tar -xvf /tmp/${ZEPPELIN_PKG_NAME}.tgz -C /usr/lib/ \
-#    && chown -R root ${ZEPPELIN_PKG_NAME} \
-#    && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \ 
-#    && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
-#    && rm /tmp/${ZEPPELIN_PKG_NAME}.tgz
+COPY ${ZEPPELIN_PKG_NAME}.tgz /tmp/
+RUN tar -xvf /tmp/${ZEPPELIN_PKG_NAME}.tgz -C /usr/lib/ \
+    && chown -R root ${ZEPPELIN_PKG_NAME} \
+    && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \ 
+    && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
+    && rm /tmp/${ZEPPELIN_PKG_NAME}.tgz
 
 #### ---- (Deployment mode use) Zeppelin Installation (Download from Internet -- Deployment) ----
 #e.g. RUN wget -c http://apache.cs.utah.edu/zeppelin/zeppelin-0.7.2/zeppelin-0.7.2-bin-all.tgz
-RUN wget -c ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG_NAME}.tgz \
-    && tar xvf ${ZEPPELIN_PKG_NAME}.tgz \
-    && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \
-    && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
-    && rm -f ${ZEPPELIN_PKG_NAME}.tgz
+#RUN wget -c ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG_NAME}.tgz \
+#    && tar xvf ${ZEPPELIN_PKG_NAME}.tgz \
+#    && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \
+#    && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
+#    && rm -f ${ZEPPELIN_PKG_NAME}.tgz
 
 #### ---- default config is ok ----
 #COPY conf/zeppelin-site.xml ${ZEPPELIN_HOME}/conf/zeppelin-site.xml
@@ -64,10 +64,9 @@ COPY worker.sh /
 # (see https://github.com/rocker-org/rocker/blob/master/r-base/Dockerfile)
 #RUN apt-get install r-base -y
 
-#RUN mkdir -p ${ZEPPELIN_HOME}/data
-
 #### ---- Debug ----
-RUN ls -al /usr/lib/zeppelin/bin \
+RUN mkdir -p ${ZEPPELIN_HOME}/data \
+    && ls -al /usr/lib/zeppelin/bin \
     && ls -al /usr/lib/zeppelin/notebook \
     && ls -al /usr/lib/zeppelin/bin/zeppelin-daemon.sh
 
