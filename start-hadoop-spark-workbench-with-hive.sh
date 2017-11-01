@@ -2,6 +2,9 @@
 
 echo "Usage: $(basename $0) <docker_file> <base_dir_for_data>"
 
+FORCE_RECREATE=1
+BUILD=0
+
 #### ---- Start docker service ----
 sudo service docker start
 
@@ -9,10 +12,11 @@ sudo service docker start
 DOCKER_FILE=${1:-docker-compose-hive.yml}
 
 #### ---- Local host persistent directories to use ----
-BASE_DATA_DIR=${2:-${HOME}/data-docker/bde2020-hadoop-spark}
+BASE_DATA_DIR=${2:-${HOME}/data-docker/docker-spark-bde2020-zeppelin}
 DATA_DIR=${BASE_DATA_DIR}/data
 NOTEBOOK_DIR=${BASE_DATA_DIR}/notebook
-mkdir -p ${DATA_DIR}
+mkdir -p ${DATA_DIR}/namenode
+mkdir -p ${DATA_DIR}/datanode
 mkdir -p ${NOTEBOOK_DIR}
 sudo chown -R $USER:$USER ${BASE_DATA_DIR}
 echo "DATA_DIR=${DATA_DIR}"
@@ -27,7 +31,17 @@ docker network create -d bridge ${DOCKER_NETWORK}
 docker rm -f spark-notebook
 
 #### ---- Starting all services ----
-DOCKER_CMD="docker-compose -f ${DOCKER_FILE} up -d "
+DOCKER_CMD="docker-compose -f ${DOCKER_FILE} up -d --remove-orphans"
+#if [ $FORCE_RECREATE -eq 0 ]; then
+#    DOCKER_CMD="${DOCKER_COMD} --no-recreate"
+#else
+#    DOCKER_CMD="${DOCKER_COMD} --force-recreate"
+#fi
+#if [ $BUILD -eq 0 ]; then
+#    DOCKER_CMD="${DOCKER_COMD} --no-build"
+#else
+#    DOCKER_CMD="${DOCKER_COMD} --build"
+#fi
 CONTAINER_LIST="\
     namenode datanode \
     hive-metastore-postgresql hive-metastore hive-server hive-server \

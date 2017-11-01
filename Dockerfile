@@ -86,10 +86,9 @@ RUN apt-get update \
 	&& rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
 && rm -rf /var/lib/apt/lists/*
 
-#RUN mkdir -p ${ZEPPELIN_HOME}/data
-
 #### ---- Debug ----
-RUN ls -al /usr/lib/zeppelin/bin \
+RUN mkdir -p ${ZEPPELIN_HOME}/data \
+    && ls -al /usr/lib/zeppelin/bin \
     && ls -al /usr/lib/zeppelin/notebook \
     && ls -al /usr/lib/zeppelin/bin/zeppelin-daemon.sh
 
