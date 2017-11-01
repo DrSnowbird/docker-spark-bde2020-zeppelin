@@ -138,6 +138,7 @@ services:
       ZEPPELIN_JAVA_OPTS: >-
         -Dspark.driver.memory=1g
         -Dspark.executor.memory=2g
+      ZEPPELIN_INT_MEM: "-Xmx4g"
       # SPARK_SUBMIT_OPTIONS: "--jars /opt/sansa-examples/jars/sansa-examples-spark-2016-12.jar"
     ports:
       - 19090:8080

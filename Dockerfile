@@ -61,30 +61,29 @@ RUN wget -c ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG
 #COPY conf/zeppelin-env.sh ${ZEPPELIN_HOME}/conf/zeppelin-env.sh
 COPY worker.sh /
 
-#### ---- SparkR ----
-# TO-DO if needed
-# (see https://github.com/rocker-org/rocker/blob/master/r-base/Dockerfile)
-#RUN apt-get install r-base -y
-ENV R_BASE_VERSION 3.4.1
+#### ---- For SparkR ----
+## To-do: Later    
+#echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" | sudo tee -a /etc/apt/sources.list
+#gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9
+#gpg -a --export E084DAB9 | sudo apt-key add 
+#sudo apt-get update
+#sudo apt-get install r-base-core r-recommended r-base-html r-base r-base-dev 
 
 ## Now install R and littler, and create a link for littler in /usr/local/bin
-## Also set a default CRAN repo, and make sure littler knows about it too
-RUN apt-get update \
-	&& apt-get install -t unstable -y --no-install-recommends \
-		littler \
-                r-cran-littler \
-		r-base=${R_BASE_VERSION}* \
-		r-base-dev=${R_BASE_VERSION}* \
-		r-recommended=${R_BASE_VERSION}* \
-        && echo 'options(repos = c(CRAN = "https://cran.rstudio.com/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site \
-        && echo 'source("/etc/R/Rprofile.site")' >> /etc/littler.r \
-	&& ln -s /usr/share/doc/littler/examples/install.r /usr/local/bin/install.r \
-	&& ln -s /usr/share/doc/littler/examples/install2.r /usr/local/bin/install2.r \
-	&& ln -s /usr/share/doc/littler/examples/installGithub.r /usr/local/bin/installGithub.r \
-	&& ln -s /usr/share/doc/littler/examples/testInstalled.r /usr/local/bin/testInstalled.r \
-	&& install.r docopt \
-	&& rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
-&& rm -rf /var/lib/apt/lists/*
+#RUN echo "..... Installing R base ....." \
+#    && echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" | tee -a /etc/apt/sources.list \
+#    && gpg --keyserver keyserver.ubuntu.com --recv-key E084DAB9 \
+#    && gpg -a --export E084DAB9 | apt-key add - \
+#    && apt-get update -y \
+#    && apt-get -y install build-essential libc6 libjpeg8 r-cran-mgcv r-base-core r-recommended r-base-html r-base r-base-dev 
+
+## To-do: Later    
+#ENV RSTUDIO_DEB_PKG=rstudio-xenial-1.1.383-amd64.deb
+#RUN echo ".... Installing R-Studio ...." \    
+#    && apt-get install gdebi-core \
+#    && wget https://download1.rstudio.org/${RSTUDIO_DEB_PKG} \
+#    && gdebi -n ${RSTUDIO_DEB_PKG} \
+#    && rm ${RSTUDIO_DEB_PKG}
 
 #### ---- Debug ----
 RUN mkdir -p ${ZEPPELIN_HOME}/data \
@@ -99,6 +98,10 @@ VOLUME ${ZEPPELIN_HOME}/data
 EXPOSE ${ZEPPELIN_PORT}
 
 #ENV SPARK_SUBMIT_OPTIONS "--jars /opt/zeppelin/sansa-examples-spark-2016-12.jar"
+ARG ZEPPELIN_JAVA_OPTS=${ZEPPELIN_JAVA_OPTS:-"-Dspark.driver.memory=1g -Dspark.executor.memory=2g"}
+ENV ZEPPELIN_JAVA_OPTS=${ZEPPELIN_JAVA_OPTS}
+ARG ZEPPELIN_INT_MEM=${ZEPPELIN_INT_MEM:-"-Xmx4g"}
+ENV ZEPPELIN_INT_MEM=${ZEPPELIN_INT_MEM}
 
 WORKDIR ${ZEPPELIN_HOME}
 
