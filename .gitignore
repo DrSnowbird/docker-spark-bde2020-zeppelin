@@ -5,3 +5,4 @@ data/
 *swp
 tmp/
 notebook/
+#clean-all.sh

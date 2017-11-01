@@ -18,6 +18,10 @@ sudo chown -R $USER:$USER ${BASE_DATA_DIR}
 echo "DATA_DIR=${DATA_DIR}"
 echo "NOTEBOOK_DIR=${NOTEBOOK_DIR}"
 
+#### ---- Create docker network ----
+DOCKER_NETWORK=spark-net
+docker network create -d bridge ${DOCKER_NETWORK}
+
 #### ---- some issue with restarting spark-notebook
 #### ---- workaround: remove old instance first
 docker rm -f spark-notebook

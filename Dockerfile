@@ -49,6 +49,7 @@ WORKDIR ${ZEPPELIN_INSTALL_DIR}
 
 #### ---- (Deployment mode use) Zeppelin Installation (Download from Internet -- Deployment) ----
 #e.g. RUN wget -c http://apache.cs.utah.edu/zeppelin/zeppelin-0.7.2/zeppelin-0.7.2-bin-all.tgz
+
 RUN wget -c ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG_NAME}.tgz \
     && tar xvf ${ZEPPELIN_PKG_NAME}.tgz \
     && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \
@@ -59,10 +60,31 @@ RUN wget -c ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG
 #COPY conf/zeppelin-site.xml ${ZEPPELIN_HOME}/conf/zeppelin-site.xml
 #COPY conf/zeppelin-env.sh ${ZEPPELIN_HOME}/conf/zeppelin-env.sh
 COPY worker.sh /
+
 #### ---- SparkR ----
 # TO-DO if needed
 # (see https://github.com/rocker-org/rocker/blob/master/r-base/Dockerfile)
 #RUN apt-get install r-base -y
+ENV R_BASE_VERSION 3.4.1
+
+## Now install R and littler, and create a link for littler in /usr/local/bin
+## Also set a default CRAN repo, and make sure littler knows about it too
+RUN apt-get update \
+	&& apt-get install -t unstable -y --no-install-recommends \
+		littler \
+                r-cran-littler \
+		r-base=${R_BASE_VERSION}* \
+		r-base-dev=${R_BASE_VERSION}* \
+		r-recommended=${R_BASE_VERSION}* \
+        && echo 'options(repos = c(CRAN = "https://cran.rstudio.com/"), download.file.method = "libcurl")' >> /etc/R/Rprofile.site \
+        && echo 'source("/etc/R/Rprofile.site")' >> /etc/littler.r \
+	&& ln -s /usr/share/doc/littler/examples/install.r /usr/local/bin/install.r \
+	&& ln -s /usr/share/doc/littler/examples/install2.r /usr/local/bin/install2.r \
+	&& ln -s /usr/share/doc/littler/examples/installGithub.r /usr/local/bin/installGithub.r \
+	&& ln -s /usr/share/doc/littler/examples/testInstalled.r /usr/local/bin/testInstalled.r \
+	&& install.r docopt \
+	&& rm -rf /tmp/downloaded_packages/ /tmp/*.rds \
+&& rm -rf /var/lib/apt/lists/*
 
 #RUN mkdir -p ${ZEPPELIN_HOME}/data
 
