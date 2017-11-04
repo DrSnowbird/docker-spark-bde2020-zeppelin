@@ -10,8 +10,8 @@ ARG ZEPPELIN_DOWNLOAD_URL=http://apache.cs.utah.edu/zeppelin
 #ARG ZEPPELIN_DOWNLOAD_URL=http://www-us.apache.org/dist/zeppelin
 ARG ZEPPELIN_INSTALL_DIR=/usr/lib 
 ARG ZEPPELIN_HOME=${ZEPPELIN_INSTALL_DIR}/zeppelin 
-ARG ZEPPELIN_VERSION=${ZEPPELIN_VERSION:-0.7.2}
-ARG ZEPPELIN_PKG_NAME=zeppelin-${ZEPPELIN_VERSION:-0.7.2}-bin-all 
+ARG ZEPPELIN_VERSION=${ZEPPELIN_VERSION:-0.7.3}
+ARG ZEPPELIN_PKG_NAME=zeppelin-${ZEPPELIN_VERSION}-bin-all 
 ARG ZEPPELIN_PORT=8080 
 
 #### ---- Host Environment variables ----
@@ -24,7 +24,7 @@ ENV ZEPPELIN_DATA_DIR=${ZEPPELIN_HOME}/data
 ENV ZEPPELIN_NOTEBOOK_DIR=${ZEPPELIN_HOME}/notebook 
 ENV ZEPPELIN_DOWNLOAD_URL=${ZEPPELIN_DOWNLOAD_URL}
 ENV ZEPPELIN_INSTALL_DIR=${ZEPPELIN_INSTALL_DIR}
-ENV ZEPPELIN_VERSION=${ZEPPELIN_VERSION:-0.7.2} 
+ENV ZEPPELIN_VERSION=${ZEPPELIN_VERSION} 
 ENV ZEPPELIN_PKG_NAME=zeppelin-${ZEPPELIN_VERSION}-bin-all 
 ENV ZEPPELIN_PORT=${ZEPPELIN_PORT} 
 
@@ -48,8 +48,6 @@ WORKDIR ${ZEPPELIN_INSTALL_DIR}
 #    && rm /tmp/${ZEPPELIN_PKG_NAME}.tgz
 
 #### ---- (Deployment mode use) Zeppelin Installation (Download from Internet -- Deployment) ----
-#e.g. RUN wget -c http://apache.cs.utah.edu/zeppelin/zeppelin-0.7.2/zeppelin-0.7.2-bin-all.tgz
-
 RUN wget -c ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG_NAME}.tgz \
     && tar xvf ${ZEPPELIN_PKG_NAME}.tgz \
     && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \
@@ -98,14 +96,15 @@ VOLUME ${ZEPPELIN_HOME}/data
 EXPOSE ${ZEPPELIN_PORT}
 
 #ENV SPARK_SUBMIT_OPTIONS "--jars /opt/zeppelin/sansa-examples-spark-2016-12.jar"
-ARG ZEPPELIN_JAVA_OPTS=${ZEPPELIN_JAVA_OPTS:-"-Dspark.driver.memory=1g -Dspark.executor.memory=2g"}
+ARG ZEPPELIN_JAVA_OPTS=${ZEPPELIN_JAVA_OPTS:-"-Dspark.driver.memory=2g -Dspark.executor.memory=16g -Dspark.cores.max=16"}
 ENV ZEPPELIN_JAVA_OPTS=${ZEPPELIN_JAVA_OPTS}
-ARG ZEPPELIN_INT_MEM=${ZEPPELIN_INT_MEM:-"-Xmx4g"}
-ENV ZEPPELIN_INT_MEM=${ZEPPELIN_INT_MEM}
+ARG ZEPPELIN_MEM=${ZEPPELIN_INT_MEM:-"-Xms1024m -Xmx16g"}
+ENV ZEPPELIN_MEM=${ZEPPELIN_INT_MEM}
 
 WORKDIR ${ZEPPELIN_HOME}
 
-CMD ["/usr/lib/zeppelin/bin/zeppelin.sh"]
+CMD ["/worker.sh"]
+#CMD ["/usr/lib/zeppelin/bin/zeppelin.sh"]
 
 
 

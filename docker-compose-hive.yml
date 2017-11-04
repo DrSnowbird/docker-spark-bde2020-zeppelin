@@ -117,6 +117,7 @@ services:
 
   zeppelin:
     image: openkbs/docker-spark-bde2020-zeppelin
+    #init: true
     build:
       context: .
       args:
@@ -124,11 +125,11 @@ services:
         APACHE_HADOOP_VERSION: 2.8.0 
         SPARK_MASTER: "spark://spark-master:7077" 
         ZEPPELIN_DOWNLOAD_URL: http://apache.cs.utah.edu/zeppelin 
-        ZEPPELIN_VERSION: 0.7.2 
+        ZEPPELIN_VERSION: 0.7.3 
         ZEPPELIN_PORT: 8080 
         ZEPPELIN_INSTALL_DIR: /usr/lib 
         ZEPPELIN_HOME: /usr/lib/zeppelin 
-        ZEPPELIN_PKG_NAME: "zeppelin-${ZEPPELIN_VERSION:-0.7.2}-bin-all"
+        ZEPPELIN_PKG_NAME: "zeppelin-${ZEPPELIN_VERSION:-0.7.3}-bin-all"
     container_name: zeppelin
     environment:
       CORE_CONF_fs_defaultFS: "hdfs://namenode:8020"
@@ -136,9 +137,10 @@ services:
       MASTER: "spark://spark-master:7077"
       ZEPPELIN_PORT: 8080
       ZEPPELIN_JAVA_OPTS: >-
-        -Dspark.driver.memory=1g
-        -Dspark.executor.memory=2g
-      ZEPPELIN_INT_MEM: "-Xmx4g"
+        -Dspark.driver.memory=2g
+        -Dspark.executor.memory=16g
+        -Dspark.cores.max=16
+      ZEPPELIN_MEM: "-Xms1024m -Xmx16g"
       # SPARK_SUBMIT_OPTIONS: "--jars /opt/sansa-examples/jars/sansa-examples-spark-2016-12.jar"
     ports:
       - 19090:8080
