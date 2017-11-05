@@ -37,7 +37,7 @@ services:
       - 50075:50075
     networks:
       - spark-net
-      
+
   hive-server:
     image: bde2020/hive:2.1.0-postgresql-metastore
     container_name: hive-server
@@ -137,11 +137,16 @@ services:
       MASTER: "spark://spark-master:7077"
       ZEPPELIN_PORT: 8080
       ZEPPELIN_JAVA_OPTS: >-
-        -Dspark.driver.memory=2g
-        -Dspark.executor.memory=16g
+        -Dspark.driver.memory=6g
+        -Dspark.executor.memory=24g
         -Dspark.cores.max=16
-      ZEPPELIN_MEM: "-Xms1024m -Xmx16g"
-      # SPARK_SUBMIT_OPTIONS: "--jars /opt/sansa-examples/jars/sansa-examples-spark-2016-12.jar"
+      ZEPPELIN_MEM: "-Xms8g -Xmx30g"
+      ZEPPELIN_INTP_MEM: "-Xms6g -Xmx30g -XX:MaxPermSize=4096m"
+      #SPARK_SUBMIT_OPTIONS: "--jars /opt/sansa-examples/jars/sansa-examples-spark-2016-12.jar"
+# export ZEPPELIN_JAVA_OPTS      		# Additional jvm options. for example, export ZEPPELIN_JAVA_OPTS="-Dspark.executor.memory=8g -Dspark.cores.max=16"
+# export ZEPPELIN_MEM            		# Zeppelin jvm mem options Default -Xms1024m -Xmx1024m -XX:MaxPermSize=512m
+# export ZEPPELIN_INTP_MEM       		# zeppelin interpreter process jvm mem options. Default -Xms1024m -Xmx1024m -XX:MaxPermSize=512m
+# export ZEPPELIN_INTP_JAVA_OPTS 		# zeppelin interpreter process jvm options.
     ports:
       - 19090:8080
     env_file:
