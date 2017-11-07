@@ -25,8 +25,6 @@ bank.registerTempTable("bank")
 
 import scala.language.implicitConversions
 
-//bank.persist
-// -- code from tar ball will fail with error - Can't overload from Long to Int
-// bank.show(bank.count, false) 
+bank.persist
 bank.show((bank.count).toInt, false) 
 
