@@ -6,3 +6,4 @@ data/
 tmp/
 notebook/
 #clean-all.sh
+zeppelin-*
