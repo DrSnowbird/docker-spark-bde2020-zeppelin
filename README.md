@@ -1,3 +1,5 @@
+[![](https://images.microbadger.com/badges/image/openkbs/docker-spark-bde2020-zeppelin.svg)](https://microbadger.com/images/openkbs/docker-spark-bde2020-zeppelin "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/openkbs/docker-spark-bde2020-zeppelin.svg)](https://microbadger.com/images/openkbs/docker-spark-bde2020-zeppelin "Get your own version badge on microbadger.com")
+
 # Zeppelin for Spark + Hadoop (optional Hive)
 
 This Dockerfile only build Zeppelin which has dependency on the rest of other dockers in "docker-spark-bde2020" including Hadoop, Spark, Hive, etc.
