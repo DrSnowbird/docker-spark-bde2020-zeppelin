@@ -1,16 +1,17 @@
-FROM bde2020/spark-worker:2.1.0-hadoop2.8-hive-java8
+FROM bde2020/spark-worker:2.4.0-hadoop2.8
+#FROM bde2020/spark-worker:2.2.0-hadoop2.8-hive-java8
 
 MAINTAINER DrSnowbird <DrSnowbird@openkbs.org>
 
 #### ---- Host Arguments variables----
-ARG APACHE_SPARK_VERSION=2.1.0 
+ARG APACHE_SPARK_VERSION=2.4.0 
 ARG APACHE_HADOOP_VERSION=2.8.0 
 ARG SPARK_MASTER="spark://spark-master:7077" 
 ARG ZEPPELIN_DOWNLOAD_URL=http://apache.cs.utah.edu/zeppelin
 #ARG ZEPPELIN_DOWNLOAD_URL=http://www-us.apache.org/dist/zeppelin
 ARG ZEPPELIN_INSTALL_DIR=/usr/lib 
 ARG ZEPPELIN_HOME=${ZEPPELIN_INSTALL_DIR}/zeppelin 
-ARG ZEPPELIN_VERSION=${ZEPPELIN_VERSION:-0.7.3}
+ARG ZEPPELIN_VERSION=${ZEPPELIN_VERSION:-0.8.1}
 ARG ZEPPELIN_PKG_NAME=zeppelin-${ZEPPELIN_VERSION}-bin-all 
 ARG ZEPPELIN_PORT=8080 
 

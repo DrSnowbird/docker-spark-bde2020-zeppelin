@@ -2,7 +2,7 @@ version: '3'
 services:
 
   namenode:
-    image: bde2020/hadoop-namenode:1.1.0-hadoop2.8-java8
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.1.1-java8
     container_name: namenode
     volumes:
       - ${HOME}/data-docker/docker-spark-bde2020-zeppelin/data/namenode:/hadoop/dfs/name
@@ -20,7 +20,7 @@ services:
       - spark-net
       
   datanode:
-    image: bde2020/hadoop-datanode:1.1.0-hadoop2.8-java8
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.1.1-java8
     container_name: datanode
     depends_on: 
       - namenode
@@ -42,7 +42,7 @@ services:
       - spark-net
       
   spark-master:
-    image: bde2020/spark-master:2.1.0-hadoop2.8-hive-java8
+    image: bde2020/spark-master:2.4.0-hadoop2.8
     container_name: spark-master
     ports:
       - 8080:8080
@@ -63,7 +63,7 @@ services:
       - spark-net
      
   spark-worker:
-    image: bde2020/spark-worker:2.1.0-hadoop2.8-hive-java8
+    image: bde2020/spark-worker:2.4.0-hadoop2.8
     container_name: spark-worker
     depends_on:
       - spark-master
@@ -89,11 +89,11 @@ services:
     build:
       context: .
       args:
-        APACHE_SPARK_VERSION: 2.1.0 
+        APACHE_SPARK_VERSION: 2.4.0 
         APACHE_HADOOP_VERSION: 2.8.0 
         SPARK_MASTER: "spark://spark-master:7077" 
         ZEPPELIN_DOWNLOAD_URL: http://apache.cs.utah.edu/zeppelin 
-        ZEPPELIN_VERSION: 0.7.2 
+        ZEPPELIN_VERSION: 0.8.1 
         ZEPPELIN_PORT: 8080 
         ZEPPELIN_INSTALL_DIR: /usr/lib 
         ZEPPELIN_HOME: /usr/lib/zeppelin 

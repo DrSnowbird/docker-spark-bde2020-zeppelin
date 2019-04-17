@@ -9,13 +9,13 @@ imageTag=openkbs/docker-spark-bde2020-zeppelin
 
 ZEPPELIN_DOWNLOAD_URL=http://apache.cs.utah.edu/zeppelin
 #ZEPPELIN_DOWNLOAD_URL=http://www-us.apache.org/dist/zeppelin
-ZEPPELIN_VERSION=0.7.3 
-ZEPPELIN_PORT=8080 
+#ZEPPELIN_VERSION=0.8.1 
+#ZEPPELIN_PORT=8080 
 ZEPPELIN_INSTALL_DIR=/usr/lib 
 
 #docker build -t ${imageTag}:${version} \
 docker build --rm -t ${imageTag} . \
-	--build-arg ZEPPELIN_VERSION=${ZEPPELIN_VERSION} \
+#	--build-arg ZEPPELIN_VERSION=${ZEPPELIN_VERSION} \
 #	--build-arg ZEPPELIN_DOWNLOAD_URL=${ZEPPELIN_DOWNLOAD_URL} \
 #	--build-arg ZEPPELIN_PORT=${ZEPPELIN_PORT} \
 #	--build-arg ZEPPELIN_INSTALL_DIR=${ZEPPELIN_INSTALL_DIR} \
