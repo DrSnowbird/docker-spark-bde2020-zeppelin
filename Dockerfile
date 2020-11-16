@@ -7,11 +7,13 @@ MAINTAINER DrSnowbird <DrSnowbird@openkbs.org>
 ARG APACHE_SPARK_VERSION=2.4.0 
 ARG APACHE_HADOOP_VERSION=2.8.0 
 ARG SPARK_MASTER="spark://spark-master:7077" 
-ARG ZEPPELIN_DOWNLOAD_URL=http://apache.cs.utah.edu/zeppelin
+# http://mirror.cc.columbia.edu/pub/software/apache/zeppelin/zeppelin-0.9.0-preview2/zeppelin-0.9.0-preview2-bin-all.tgz
+ARG ZEPPELIN_DOWNLOAD_URL=http://mirror.cc.columbia.edu/pub/software/apache/zeppelin
+#ARG ZEPPELIN_DOWNLOAD_URL=http://apache.cs.utah.edu/zeppelin
 #ARG ZEPPELIN_DOWNLOAD_URL=http://www-us.apache.org/dist/zeppelin
 ARG ZEPPELIN_INSTALL_DIR=/usr/lib 
 ARG ZEPPELIN_HOME=${ZEPPELIN_INSTALL_DIR}/zeppelin 
-ARG ZEPPELIN_VERSION=${ZEPPELIN_VERSION:-0.8.1}
+ARG ZEPPELIN_VERSION=${ZEPPELIN_VERSION:-0.9.0-preview2}
 ARG ZEPPELIN_PKG_NAME=zeppelin-${ZEPPELIN_VERSION}-bin-all 
 ARG ZEPPELIN_PORT=8080 
 
@@ -49,7 +51,7 @@ WORKDIR ${ZEPPELIN_INSTALL_DIR}
 #    && rm /tmp/${ZEPPELIN_PKG_NAME}.tgz
 
 #### ---- (Deployment mode use) Zeppelin Installation (Download from Internet -- Deployment) ----
-RUN wget -c ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG_NAME}.tgz \
+RUN wget -cq ${ZEPPELIN_DOWNLOAD_URL}/zeppelin-${ZEPPELIN_VERSION}/${ZEPPELIN_PKG_NAME}.tgz \
     && tar xvf ${ZEPPELIN_PKG_NAME}.tgz \
     && ln -s ${ZEPPELIN_PKG_NAME} zeppelin \
     && mkdir -p ${ZEPPELIN_HOME}/logs && mkdir -p ${ZEPPELIN_HOME}/run \
@@ -99,7 +101,7 @@ EXPOSE ${ZEPPELIN_PORT}
 #ENV SPARK_SUBMIT_OPTIONS "--jars /opt/zeppelin/sansa-examples-spark-2016-12.jar"
 
 ENV ZEPPELIN_JAVA_OPTS=${ZEPPELIN_JAVA_OPTS:-"-Dspark.driver.memory=4g -Dspark.executor.memory=8g -Dspark.cores.max=16"}
-ENV ZEPPELIN_MEM=${ZEPPELIN_MEM:-"-Xms8g -Xmx28g -XX:MaxPermSize=8g"}
+ENV ZEPPELIN_MEM=${ZEPPELIN_MEM:-"-Xms4g -Xmx28g -XX:MaxPermSize=8g"}
 ENV ZEPPELIN_INTP_MEM=${ZEPPELIN_INTP_MEM:-"-Xms4g -Xmx24g"}
 #ENV ZEPPELIN_INTP_JAVA_OPTS=${ZEPPELIN_INTP_JAVA_OPTS}
 
